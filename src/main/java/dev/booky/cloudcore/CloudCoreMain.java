@@ -6,6 +6,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class CloudCoreMain extends JavaPlugin {
 
+    public CloudCoreMain() {
+        try {
+            Class.forName("io.papermc.paper.configuration.Configuration");
+        } catch (ClassNotFoundException exception) {
+            throw new RuntimeException("Please use paper for this plugin to function! Download it at https://papermc.io/.");
+        }
+    }
+
     @Override
     public void onLoad() {
         new Metrics(this, 17949);
