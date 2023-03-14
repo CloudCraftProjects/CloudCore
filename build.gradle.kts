@@ -16,6 +16,8 @@ repositories {
 
 dependencies {
     compileOnlyApi("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
+
+    api("org.bstats:bstats-bukkit:3.0.0")
 }
 
 java {
@@ -39,6 +41,10 @@ bukkit {
 tasks {
     runServer {
         minecraftVersion("1.19.3")
+    }
+
+    shadowJar {
+        relocate("org.bstats", "dev.booky.cloudcore.bstats")
     }
 
     assemble {
