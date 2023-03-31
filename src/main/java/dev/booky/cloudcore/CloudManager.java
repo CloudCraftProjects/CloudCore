@@ -5,9 +5,13 @@ import dev.booky.cloudcore.config.ConfigLoader;
 import dev.booky.cloudcore.util.CloudConfig;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.nio.file.Path;
+import java.util.Map;
+import java.util.WeakHashMap;
 import java.util.function.Consumer;
 
 public final class CloudManager {
@@ -28,6 +32,8 @@ public final class CloudManager {
 
     private final Plugin plugin;
 
+    private final Map<Player, Long> lastLaunchUse = new WeakHashMap<>();
+
     private final Path configPath;
     private CloudConfig config;
 
@@ -47,6 +53,15 @@ public final class CloudManager {
     public synchronized void updateConfig(Consumer<CloudConfig> consumer) {
         consumer.accept(this.config);
         this.saveConfig();
+    }
+
+    public long getLastLaunchUse(Player player) {
+        return this.lastLaunchUse.getOrDefault(player, 0L);
+    }
+
+    @ApiStatus.Internal
+    public void setLastLaunchUse(Player player) {
+        this.lastLaunchUse.put(player, System.currentTimeMillis());
     }
 
     public Component getPrefix() {

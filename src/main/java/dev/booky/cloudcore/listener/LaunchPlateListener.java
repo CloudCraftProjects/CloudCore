@@ -19,14 +19,11 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.Map;
 import java.util.Set;
-import java.util.WeakHashMap;
 
 public class LaunchPlateListener implements Listener {
 
     private final CloudManager manager;
-    private final Map<Player, Long> lastUse = new WeakHashMap<>();
 
     public LaunchPlateListener(CloudManager manager) {
         this.manager = manager;
@@ -64,7 +61,7 @@ public class LaunchPlateListener implements Listener {
         LaunchPlateUseEvent launchEvent = new LaunchPlateUseEvent(player,
                 event.getClickedBlock(), this.manager.getConfig().getLaunchVelocity());
 
-        if (System.currentTimeMillis() - this.lastUse.getOrDefault(player, 0L) < 1000L) {
+        if (System.currentTimeMillis() - this.manager.getLastLaunchUse(player) < 1000L) {
             launchEvent.setCancelled(true);
         }
 
@@ -73,7 +70,7 @@ public class LaunchPlateListener implements Listener {
             return;
         }
 
-        this.lastUse.put(player, System.currentTimeMillis());
+        this.manager.setLastLaunchUse(player);
         player.setVelocity(player.getVelocity().add(launchEvent.getLaunchVelocity()));
     }
 
