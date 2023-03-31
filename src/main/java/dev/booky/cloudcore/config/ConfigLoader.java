@@ -6,8 +6,10 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.ApiStatus;
 import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.loader.AbstractConfigurationLoader;
+import org.spongepowered.configurate.serialize.TypeSerializerCollection;
 import org.spongepowered.configurate.yaml.NodeStyle;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
@@ -17,28 +19,36 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class ConfigLoader {
 
     private static final Map<Path, YamlConfigurationLoader> LOADER_CACHE = new HashMap<>();
+    private static final Consumer<TypeSerializerCollection.Builder> NO_OP_SERIALIZERS = $ -> { /**/ };
 
-    public static <T extends AbstractConfigurationLoader.Builder<T, ?>> T setDefaultSerializers(T loaderBuilder) {
-        return loaderBuilder.defaultOptions(opts -> opts.serializers(builder -> builder
+    @ApiStatus.Internal
+    public static <T extends AbstractConfigurationLoader.Builder<T, ?>> T setDefaultSerializers(T loaderBuilder, Consumer<TypeSerializerCollection.Builder> serializers) {
+        return loaderBuilder.defaultOptions(opts -> opts.serializers(serializers.andThen(builder -> builder
                 .register(NamespacedKey.class, NamespacedKeySerializer.INSTANCE)
                 .register(Block.class, BlockSerializer.INSTANCE)
                 .register(Vector.class, VectorSerializer.INSTANCE)
                 .register(Location.class, LocationSerializer.INSTANCE)
-                .register(World.class, WorldSerializer.INSTANCE)));
+                .register(World.class, WorldSerializer.INSTANCE))));
     }
 
-    public static YamlConfigurationLoader createLoader(Path path) {
-        return LOADER_CACHE.computeIfAbsent(path, $ -> setDefaultSerializers(YamlConfigurationLoader.builder())
+    @ApiStatus.Internal
+    public static YamlConfigurationLoader createLoader(Path path, Consumer<TypeSerializerCollection.Builder> serializers) {
+        return LOADER_CACHE.computeIfAbsent(path, $ -> setDefaultSerializers(YamlConfigurationLoader.builder(), serializers)
                 .path(path).nodeStyle(NodeStyle.BLOCK).indent(2).build());
     }
 
     public static <T> T loadObject(Path path, Class<T> clazz) {
+        return loadObject(path, clazz, NO_OP_SERIALIZERS);
+    }
+
+    public static <T> T loadObject(Path path, Class<T> clazz, Consumer<TypeSerializerCollection.Builder> serializers) {
         try {
-            YamlConfigurationLoader loader = createLoader(path);
+            YamlConfigurationLoader loader = createLoader(path, serializers);
             T obj;
 
             if (Files.exists(path)) {
@@ -64,8 +74,12 @@ public class ConfigLoader {
     }
 
     public static <T> void saveObject(Path path, T obj) {
+        saveObject(path, obj, NO_OP_SERIALIZERS);
+    }
+
+    public static <T> void saveObject(Path path, T obj, Consumer<TypeSerializerCollection.Builder> serializers) {
         try {
-            YamlConfigurationLoader loader = createLoader(path);
+            YamlConfigurationLoader loader = createLoader(path, serializers);
             CommentedConfigurationNode node = loader.createNode();
             node.set(obj.getClass(), obj);
             loader.save(node);
