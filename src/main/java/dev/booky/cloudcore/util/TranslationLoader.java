@@ -41,7 +41,8 @@ public class TranslationLoader {
 
     private void registerBundle(TranslationRegistry registry, Locale locale) {
         String baseName = this.plugin.getPluginMeta().getName().toLowerCase(Locale.ROOT);
-        ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale, UTF8ResourceBundleControl.get());
+        ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale,
+                this.plugin.getClass().getClassLoader(), UTF8ResourceBundleControl.get());
         registry.registerAll(locale, bundle, false);
     }
 }
