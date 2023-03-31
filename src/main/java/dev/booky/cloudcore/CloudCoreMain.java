@@ -6,6 +6,7 @@ import dev.booky.cloudcore.listener.LaunchPlateListener;
 import dev.booky.cloudcore.util.TranslationLoader;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class CloudCoreMain extends JavaPlugin {
@@ -37,6 +38,8 @@ public class CloudCoreMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new LaunchPlateListener(this.manager), this);
 
         LaunchPlateCommand.register(this.manager);
+
+        Bukkit.getServicesManager().register(CloudManager.class, this.manager, this, ServicePriority.Normal);
     }
 
     @Override
