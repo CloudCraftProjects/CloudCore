@@ -1,7 +1,9 @@
 package dev.booky.cloudcore.config;
 // Created by booky10 in TJCUpdater (12:55 27.06.22)
 
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.util.Vector;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -24,7 +26,9 @@ public class ConfigLoader {
         return loaderBuilder.defaultOptions(opts -> opts.serializers(builder -> builder
                 .register(NamespacedKey.class, NamespacedKeySerializer.INSTANCE)
                 .register(Block.class, BlockSerializer.INSTANCE)
-                .register(Vector.class, VectorSerializer.INSTANCE)));
+                .register(Vector.class, VectorSerializer.INSTANCE)
+                .register(Location.class, LocationSerializer.INSTANCE)
+                .register(World.class, WorldSerializer.INSTANCE)));
     }
 
     public static YamlConfigurationLoader createLoader(Path path) {
