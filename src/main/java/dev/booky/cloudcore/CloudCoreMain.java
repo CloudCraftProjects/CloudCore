@@ -1,6 +1,7 @@
 package dev.booky.cloudcore;
 // Created by booky10 in CloudCore (10:35 14.03.23)
 
+import dev.booky.cloudcore.commands.CloudCoreCommand;
 import dev.booky.cloudcore.commands.LaunchPlateCommand;
 import dev.booky.cloudcore.listener.LaunchPlateListener;
 import dev.booky.cloudcore.util.TranslationLoader;
@@ -38,6 +39,7 @@ public class CloudCoreMain extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new LaunchPlateListener(this.manager), this);
 
         LaunchPlateCommand.register(this.manager);
+        CloudCoreCommand.register(this.manager);
 
         Bukkit.getServicesManager().register(CloudManager.class, this.manager, this, ServicePriority.Normal);
     }
