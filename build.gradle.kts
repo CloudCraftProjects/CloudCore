@@ -11,13 +11,27 @@ group = "dev.booky"
 version = "1.0.0"
 
 repositories {
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots") {
+        content {
+            includeGroup("dev.jorel")
+        }
+    }
+
     maven("https://repo.papermc.io/repository/maven-public/")
 }
 
 dependencies {
-    compileOnlyApi("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
+    compileOnlyApi("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
 
-    api("org.bstats:bstats-bukkit:3.0.0")
+    // command library
+    compileOnlyApi("dev.jorel:commandapi-bukkit-core:9.0.0-SNAPSHOT")
+    compileOnlyApi("com.mojang:brigadier:1.0.18") // required for cmd api to compile
+
+    // config library, included in paper
+    compileOnlyApi("org.spongepowered:configurate-yaml:4.1.2")
+
+    // metrics
+    api("org.bstats:bstats-bukkit:3.0.2")
 }
 
 java {
@@ -36,11 +50,13 @@ bukkit {
     main = "$group.cloudcore.CloudCoreMain"
     apiVersion = "1.19"
     authors = listOf("booky10")
+    depend = listOf("CommandAPI")
+    load = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.PluginLoadOrder.POSTWORLD
 }
 
 tasks {
     runServer {
-        minecraftVersion("1.19.3")
+        minecraftVersion("1.19.4")
     }
 
     shadowJar {
