@@ -9,7 +9,7 @@ import org.spongepowered.configurate.serialize.TypeSerializer;
 
 import java.lang.reflect.Type;
 
-public class VectorSerializer implements TypeSerializer<Vector> {
+public final class VectorSerializer implements TypeSerializer<Vector> {
 
     public static final VectorSerializer INSTANCE = new VectorSerializer();
 
@@ -17,7 +17,7 @@ public class VectorSerializer implements TypeSerializer<Vector> {
     }
 
     @Override
-    public Vector deserialize(Type type, ConfigurationNode node) throws SerializationException {
+    public Vector deserialize(Type type, ConfigurationNode node) {
         if (node.virtual()) {
             return null;
         }

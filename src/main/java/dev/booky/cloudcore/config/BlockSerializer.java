@@ -3,6 +3,7 @@ package dev.booky.cloudcore.config;
 
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.util.BlockVector;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
@@ -24,11 +25,13 @@ public final class BlockSerializer implements TypeSerializer<Block> {
             return null;
         }
 
+        BlockVector pos = node.get(BlockVector.class);
+        Objects.requireNonNull(pos);
+
         World world = node.node("dimension").get(World.class);
-        int x = node.node("x").getInt();
-        int y = node.node("y").getInt();
-        int z = node.node("z").getInt();
-        return Objects.requireNonNull(world).getBlockAt(x, y, z);
+        Objects.requireNonNull(world);
+
+        return world.getBlockAt(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ());
     }
 
     @Override
@@ -38,9 +41,7 @@ public final class BlockSerializer implements TypeSerializer<Block> {
             return;
         }
 
+        node.set(new BlockVector(obj.getX(), obj.getY(), obj.getZ()));
         node.node("dimension").set(obj.getWorld());
-        node.node("x").set(obj.getX());
-        node.node("y").set(obj.getY());
-        node.node("z").set(obj.getZ());
     }
 }

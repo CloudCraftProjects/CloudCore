@@ -2,28 +2,26 @@ package dev.booky.cloudcore.config;
 // Created by booky10 in CraftAttack (13:23 05.10.22)
 
 import org.bukkit.NamespacedKey;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.spongepowered.configurate.ConfigurationNode;
-import org.spongepowered.configurate.serialize.SerializationException;
-import org.spongepowered.configurate.serialize.TypeSerializer;
+import org.spongepowered.configurate.serialize.ScalarSerializer;
 
 import java.lang.reflect.Type;
-import java.util.Objects;
+import java.util.function.Predicate;
 
-public final class NamespacedKeySerializer implements TypeSerializer<NamespacedKey> {
+public final class NamespacedKeySerializer extends ScalarSerializer<NamespacedKey> {
 
     public static final NamespacedKeySerializer INSTANCE = new NamespacedKeySerializer();
 
     private NamespacedKeySerializer() {
+        super(NamespacedKey.class);
     }
 
     @Override
-    public NamespacedKey deserialize(Type type, ConfigurationNode node) throws SerializationException {
-        return node.virtual() ? null : NamespacedKey.fromString(Objects.requireNonNull(node.getString()));
+    public NamespacedKey deserialize(Type type, Object obj) {
+        return NamespacedKey.fromString(String.valueOf(obj));
     }
 
     @Override
-    public void serialize(Type type, @Nullable NamespacedKey obj, ConfigurationNode node) throws SerializationException {
-        node.set(obj == null ? null : obj.asString());
+    protected Object serialize(NamespacedKey item, Predicate<Class<?>> typeSupported) {
+        return item.asString();
     }
 }

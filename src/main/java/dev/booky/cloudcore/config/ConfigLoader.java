@@ -2,9 +2,9 @@ package dev.booky.cloudcore.config;
 // Created by booky10 in TJCUpdater (12:55 27.06.22)
 
 import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.ApiStatus;
 import org.spongepowered.configurate.CommentedConfigurationNode;
@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class ConfigLoader {
+public final class ConfigLoader {
 
     private static final Map<Path, YamlConfigurationLoader> LOADER_CACHE = new HashMap<>();
     private static final Consumer<TypeSerializerCollection.Builder> NO_OP_SERIALIZERS = $ -> { /**/ };
@@ -29,11 +29,13 @@ public class ConfigLoader {
     @ApiStatus.Internal
     public static <T extends AbstractConfigurationLoader.Builder<T, ?>> T setDefaultSerializers(T loaderBuilder, Consumer<TypeSerializerCollection.Builder> serializers) {
         return loaderBuilder.defaultOptions(opts -> opts.serializers(serializers.andThen(builder -> builder
-                .register(NamespacedKey.class, NamespacedKeySerializer.INSTANCE)
-                .register(Block.class, BlockSerializer.INSTANCE)
+                .register(EnumSerializer.INSTANCE)
+                .register(NamespacedKeySerializer.INSTANCE)
+                .register(World.class, WorldSerializer.INSTANCE)
+                .register(BlockVector.class, BlockVectorSerializer.INSTANCE)
                 .register(Vector.class, VectorSerializer.INSTANCE)
-                .register(Location.class, LocationSerializer.INSTANCE)
-                .register(World.class, WorldSerializer.INSTANCE))));
+                .register(Block.class, BlockSerializer.INSTANCE)
+                .register(Location.class, LocationSerializer.INSTANCE))));
     }
 
     @ApiStatus.Internal

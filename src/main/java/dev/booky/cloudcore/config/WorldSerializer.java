@@ -12,7 +12,7 @@ import org.spongepowered.configurate.serialize.TypeSerializer;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
-public class WorldSerializer implements TypeSerializer<World> {
+public final class WorldSerializer implements TypeSerializer<World> {
 
     public static final WorldSerializer INSTANCE = new WorldSerializer();
 
@@ -26,7 +26,10 @@ public class WorldSerializer implements TypeSerializer<World> {
         }
 
         NamespacedKey dimKey = node.get(NamespacedKey.class);
-        return Bukkit.getWorld(Objects.requireNonNull(dimKey));
+        Objects.requireNonNull(dimKey);
+
+        World world = Bukkit.getWorld(dimKey);
+        return Objects.requireNonNull(world, "World '" + dimKey + "' not loaded");
     }
 
     @Override
