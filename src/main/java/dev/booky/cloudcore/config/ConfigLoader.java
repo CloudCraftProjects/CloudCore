@@ -1,6 +1,7 @@
 package dev.booky.cloudcore.config;
 // Created by booky10 in TJCUpdater (12:55 27.06.22)
 
+import dev.booky.cloudcore.util.BlockBBox;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -35,7 +36,8 @@ public final class ConfigLoader {
                 .register(BlockVector.class, BlockVectorSerializer.INSTANCE)
                 .register(Vector.class, VectorSerializer.INSTANCE)
                 .register(Block.class, BlockSerializer.INSTANCE)
-                .register(Location.class, LocationSerializer.INSTANCE))));
+                .register(Location.class, LocationSerializer.INSTANCE)
+                .register(BlockBBox.class, BlockBBoxSerializer.INSTANCE))));
     }
 
     @ApiStatus.Internal
