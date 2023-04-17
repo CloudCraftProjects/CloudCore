@@ -10,6 +10,8 @@ plugins {
 group = "dev.booky"
 version = "1.0.0"
 
+val plugin: Configuration by configurations.creating { /**/ }
+
 repositories {
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots") {
         content {
@@ -32,6 +34,9 @@ dependencies {
 
     // metrics
     api("org.bstats:bstats-bukkit:3.0.2")
+
+    // testserver dependency plugins
+    plugin("dev.jorel:commandapi-bukkit-plugin:9.0.0-SNAPSHOT") { isTransitive = false }
 }
 
 java {
@@ -57,6 +62,7 @@ bukkit {
 tasks {
     runServer {
         minecraftVersion("1.19.4")
+        pluginJars.from(plugin.resolve())
     }
 
     shadowJar {
