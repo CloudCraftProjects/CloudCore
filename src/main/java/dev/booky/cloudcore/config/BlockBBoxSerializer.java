@@ -45,7 +45,7 @@ public class BlockBBoxSerializer implements TypeSerializer<BlockBBox> {
         }
 
         node.node("dimension").set(obj.getWorld());
-        node.node("corner1").set(obj.getMin());
-        node.node("corner2").set(obj.getMax());
+        node.node("corner1").set(obj.getMinVec());
+        node.node("corner2").set(obj.getMaxVec());
     }
 }

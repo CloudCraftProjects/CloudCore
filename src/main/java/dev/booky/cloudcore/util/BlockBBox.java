@@ -5,17 +5,17 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.util.BlockVector;
-import org.bukkit.util.BoundingBox;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.NotNull;
 
 import java.lang.ref.WeakReference;
 import java.util.Objects;
 
-public final class BlockBBox extends BoundingBox {
+public final class BlockBBox implements Cloneable {
 
     private final WeakReference<World> world;
+    private final int minX, minY, minZ;
+    private final int maxX, maxY, maxZ;
 
     public BlockBBox(Location corner1, Location corner2) {
         this(corner1.getWorld(), corner1.getX(), corner1.getY(), corner1.getZ(),
@@ -35,74 +35,83 @@ public final class BlockBBox extends BoundingBox {
     }
 
     public BlockBBox(World world, int x1, int y1, int z1, int x2, int y2, int z2) {
-        super(x1, y1, z1, x2, y2, z2);
         this.world = new WeakReference<>(world);
+        this.minX = Math.min(x1, x2);
+        this.minY = Math.min(y1, y2);
+        this.minZ = Math.min(z1, z2);
+        this.maxX = Math.max(x1, x2);
+        this.maxY = Math.max(y1, y2);
+        this.maxZ = Math.max(z1, z2);
     }
 
-    public final boolean containsLoc(Location location) {
-        if (this.getWorld() != location.getWorld()) {
+    public final boolean contains(Block block) {
+        return this.contains(block.getWorld(), block.getX(), block.getY(), block.getZ());
+    }
+
+    public final boolean contains(World world, int x, int y, int z) {
+        if (this.getWorld() != world) {
             return false;
         }
-        return this.contains(location.getX(), location.getY(), location.getZ());
+        return this.contains(x, y, z);
     }
 
-    public int getBlockMinX() {
-        return NumberConversions.floor(super.getMinX());
+    public final boolean contains(int x, int y, int z) {
+        return x >= this.minX && x <= this.maxX
+                && y >= this.minY && y <= this.maxY
+                && z >= this.minZ && z <= this.maxZ;
     }
 
-    public int getBlockMinY() {
-        return NumberConversions.floor(super.getMinY());
+    public final int getMinX() {
+        return this.minX;
     }
 
-    public int getBlockMinZ() {
-        return NumberConversions.floor(super.getMinZ());
+    public final int getMinY() {
+        return this.minY;
     }
 
-    public int getBlockMaxX() {
-        return NumberConversions.floor(super.getMaxX());
+    public final int getMinZ() {
+        return this.minZ;
     }
 
-    public int getBlockMaxY() {
-        return NumberConversions.floor(super.getMaxY());
+    public final int getMaxX() {
+        return this.maxX;
     }
 
-    public int getBlockMaxZ() {
-        return NumberConversions.floor(super.getMaxZ());
+    public final int getMaxY() {
+        return this.maxY;
     }
 
-    public Block getMinBlock() {
-        return this.getWorld().getBlockAt(this.getBlockMinX(), this.getBlockMinY(), this.getBlockMinZ());
+    public final int getMaxZ() {
+        return this.maxZ;
     }
 
-    public Block getMaxBlock() {
-        return this.getWorld().getBlockAt(this.getBlockMaxX(), this.getBlockMaxY(), this.getBlockMaxZ());
+    public final Block getMinBlock() {
+        return this.getWorld().getBlockAt(this.getMinX(), this.getMinY(), this.getMinZ());
     }
 
-    public Location getMinPos() {
-        return new Location(this.getWorld(), super.getMinX(), super.getMinY(), super.getMinZ());
+    public final Block getMaxBlock() {
+        return this.getWorld().getBlockAt(this.getMaxX(), this.getMaxY(), this.getMaxZ());
     }
 
-    public Location getMaxPos() {
-        return new Location(this.getWorld(), super.getMaxX(), super.getMaxY(), super.getMaxZ());
+    public final BlockVector getMinVec() {
+        return new BlockVector(this.minX, this.minY, this.minZ);
     }
 
-    @Override
-    public @NotNull BlockVector getMin() {
-        return super.getMin().toBlockVector();
+    public final BlockVector getMaxVec() {
+        return new BlockVector(this.maxX, this.maxY, this.maxZ);
     }
 
-    @Override
-    public @NotNull BlockVector getMax() {
-        return super.getMax().toBlockVector();
-    }
-
-    public World getWorld() {
+    public final World getWorld() {
         return Objects.requireNonNull(this.world.get(), "World has been unloaded");
     }
 
     @Override
-    public @NotNull BlockBBox clone() {
-        return (BlockBBox) super.clone();
+    public BlockBBox clone() {
+        try {
+            return (BlockBBox) super.clone();
+        } catch (CloneNotSupportedException exception) {
+            throw new RuntimeException(exception);
+        }
     }
 
     @Override
