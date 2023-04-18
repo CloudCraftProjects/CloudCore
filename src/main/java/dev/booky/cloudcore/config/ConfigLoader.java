@@ -2,6 +2,7 @@ package dev.booky.cloudcore.config;
 // Created by booky10 in TJCUpdater (12:55 27.06.22)
 
 import dev.booky.cloudcore.util.BlockBBox;
+import io.leangen.geantyref.TypeToken;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -21,6 +22,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public final class ConfigLoader {
 
@@ -46,29 +48,44 @@ public final class ConfigLoader {
                 .path(path).nodeStyle(NodeStyle.BLOCK).indent(2).build());
     }
 
+    private static <T> Supplier<T> defSupplier(Class<T> clazz) {
+        return () -> {
+            try {
+                Constructor<T> ctor = clazz.getDeclaredConstructor();
+                ctor.setAccessible(true);
+                return ctor.newInstance();
+            } catch (ReflectiveOperationException exception) {
+                throw new RuntimeException(exception);
+            }
+        };
+    }
+
     public static <T> T loadObject(Path path, Class<T> clazz) {
         return loadObject(path, clazz, NO_OP_SERIALIZERS);
     }
 
     public static <T> T loadObject(Path path, Class<T> clazz, Consumer<TypeSerializerCollection.Builder> serializers) {
+        return loadObject(path, TypeToken.get(clazz), defSupplier(clazz), serializers);
+    }
+
+    public static <T> T loadObject(Path path, TypeToken<T> type, Supplier<T> defSupplier) {
+        return loadObject(path, type, defSupplier, NO_OP_SERIALIZERS);
+    }
+
+    public static <T> T loadObject(Path path, TypeToken<T> type, Supplier<T> defSupplier,
+                                   Consumer<TypeSerializerCollection.Builder> serializers) {
         try {
             YamlConfigurationLoader loader = createLoader(path, serializers);
             T obj;
 
             if (Files.exists(path)) {
-                obj = loader.load().get(clazz);
+                obj = loader.load().get(type);
             } else {
-                try {
-                    Constructor<T> ctor = clazz.getDeclaredConstructor();
-                    ctor.setAccessible(true);
-                    obj = ctor.newInstance();
-                } catch (ReflectiveOperationException exception) {
-                    throw new RuntimeException(exception);
-                }
+                obj = defSupplier.get();
             }
 
             CommentedConfigurationNode node = loader.createNode();
-            node.set(clazz, obj);
+            node.set(type, obj);
 
             loader.save(node);
             return obj;
@@ -81,11 +98,21 @@ public final class ConfigLoader {
         saveObject(path, obj, NO_OP_SERIALIZERS);
     }
 
+    @SuppressWarnings("unchecked") // idk how this is unchecked
     public static <T> void saveObject(Path path, T obj, Consumer<TypeSerializerCollection.Builder> serializers) {
+        Class<T> clazz = (Class<T>) obj.getClass();
+        saveObject(path, TypeToken.get(clazz), obj, serializers);
+    }
+
+    public static <T> void saveObject(Path path, TypeToken<T> type, T obj) {
+        saveObject(path, type, obj, NO_OP_SERIALIZERS);
+    }
+
+    public static <T> void saveObject(Path path, TypeToken<T> type, T obj, Consumer<TypeSerializerCollection.Builder> serializers) {
         try {
             YamlConfigurationLoader loader = createLoader(path, serializers);
             CommentedConfigurationNode node = loader.createNode();
-            node.set(obj.getClass(), obj);
+            node.set(type, obj);
             loader.save(node);
         } catch (IOException exception) {
             throw new RuntimeException(exception);
