@@ -5,6 +5,7 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.TranslatableComponent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.GlobalTranslator;
 import net.kyori.adventure.translation.Translator;
@@ -119,6 +120,11 @@ public final class TranslationLoader implements Translator {
         Component rendered = this.replaceArgs(locale, translated, component.args());
         if (component.hasStyling()) {
             rendered = rendered.applyFallbackStyle(component.style());
+
+            HoverEvent<?> hoverEvent = rendered.hoverEvent();
+            if (hoverEvent != null && hoverEvent.value() instanceof Component text) {
+                rendered = rendered.hoverEvent(GlobalTranslator.render(text, locale));
+            }
         }
 
         List<Component> rawChildren = component.children();
