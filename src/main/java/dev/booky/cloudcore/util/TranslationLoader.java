@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -117,8 +118,20 @@ public final class TranslationLoader implements Translator {
 
         Component rendered = this.replaceArgs(locale, translated, component.args());
         if (component.hasStyling()) {
-            return rendered.applyFallbackStyle(component.style());
+            rendered = rendered.applyFallbackStyle(component.style());
         }
+
+        List<Component> rawChildren = component.children();
+        if (!rawChildren.isEmpty()) {
+            List<Component> children = new ArrayList<>(rendered.children().size() + rawChildren.size());
+            children.addAll(rendered.children());
+
+            for (Component child : rawChildren) {
+                children.add(GlobalTranslator.renderer().render(child, locale));
+            }
+            rendered = rendered.children(children);
+        }
+
         return rendered;
     }
 
