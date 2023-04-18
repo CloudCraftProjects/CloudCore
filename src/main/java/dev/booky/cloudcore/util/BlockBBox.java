@@ -61,6 +61,30 @@ public final class BlockBBox implements Cloneable {
                 && z >= this.minZ && z <= this.maxZ;
     }
 
+    public final double getCenterX() {
+        return this.minX + (this.maxX - this.minX) * 0.5d;
+    }
+
+    public final double getCenterY() {
+        return this.minY + (this.maxY - this.minY) * 0.5d;
+    }
+
+    public final double getCenterZ() {
+        return this.minZ + (this.maxZ - this.minZ) * 0.5d;
+    }
+
+    public final int getBlockCenterX() {
+        return NumberConversions.floor(this.getCenterX());
+    }
+
+    public final int getBlockCenterY() {
+        return NumberConversions.floor(this.getCenterY());
+    }
+
+    public final int getBlockCenterZ() {
+        return NumberConversions.floor(this.getCenterZ());
+    }
+
     public final int getMinX() {
         return this.minX;
     }
@@ -85,12 +109,20 @@ public final class BlockBBox implements Cloneable {
         return this.maxZ;
     }
 
+    public final Location getCenterLocation() {
+        return new Location(this.getWorld(), this.getCenterX(), this.getCenterY(), this.getCenterZ());
+    }
+
     public final Block getMinBlock() {
-        return this.getWorld().getBlockAt(this.getMinX(), this.getMinY(), this.getMinZ());
+        return this.getWorld().getBlockAt(this.minX, this.minY, this.minZ);
     }
 
     public final Block getMaxBlock() {
-        return this.getWorld().getBlockAt(this.getMaxX(), this.getMaxY(), this.getMaxZ());
+        return this.getWorld().getBlockAt(this.maxX, this.maxY, this.maxZ);
+    }
+
+    public final Vector getCenterVec() {
+        return new Vector(this.getCenterX(), this.getCenterY(), this.getCenterZ());
     }
 
     public final BlockVector getMinVec() {
@@ -117,20 +149,30 @@ public final class BlockBBox implements Cloneable {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (!(obj instanceof BlockBBox that)) return false;
-        if (!super.equals(obj)) return false;
-        return this.getWorld().equals(that.getWorld());
+        if (!(obj instanceof BlockBBox blockBBox)) return false;
+        if (minX != blockBBox.minX) return false;
+        if (minY != blockBBox.minY) return false;
+        if (minZ != blockBBox.minZ) return false;
+        if (maxX != blockBBox.maxX) return false;
+        if (maxY != blockBBox.maxY) return false;
+        if (maxZ != blockBBox.maxZ) return false;
+        return world.equals(blockBBox.world);
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + this.getWorld().hashCode();
+        int result = world.hashCode();
+        result = 31 * result + minX;
+        result = 31 * result + minY;
+        result = 31 * result + minZ;
+        result = 31 * result + maxX;
+        result = 31 * result + maxY;
+        result = 31 * result + maxZ;
         return result;
     }
 
     @Override
     public String toString() {
-        return "BlockBBox{world=" + this.getWorld() + ",parent={" + super.toString() + "}}";
+        return "BlockBBox{world=" + this.world + ", minX=" + this.minX + ", minY=" + this.minY + ", minZ=" + this.minZ + ", maxX=" + this.maxX + ", maxY=" + this.maxY + ", maxZ=" + this.maxZ + '}';
     }
 }
