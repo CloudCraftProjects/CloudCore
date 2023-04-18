@@ -116,14 +116,14 @@ public final class TranslationLoader implements Translator {
             }
         }
 
-        Component rendered = this.render(translated, component.args());
+        Component rendered = this.replaceArgs(locale, translated, component.args());
         if (component.hasStyling()) {
             return rendered.applyFallbackStyle(component.style());
         }
         return rendered;
     }
 
-    private Component render(Component component, List<Component> args) {
+    private Component replaceArgs(Locale locale, Component component, List<Component> args) {
         if (args.isEmpty()) {
             return component;
         }
@@ -134,7 +134,8 @@ public final class TranslationLoader implements Translator {
                     try {
                         int index = Integer.parseInt(result.group(1));
                         if (index < args.size()) {
-                            return builder.content("").append(args.get(index));
+                            Component arg = GlobalTranslator.render(args.get(index), locale);
+                            return builder.content("").append(arg);
                         }
                     } catch (NumberFormatException ignored) {
                     }
