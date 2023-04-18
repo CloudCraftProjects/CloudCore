@@ -8,7 +8,6 @@ import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.GlobalTranslator;
 import net.kyori.adventure.translation.Translator;
-import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -78,7 +77,7 @@ public final class TranslationLoader implements Translator {
     private void registerBundle(Locale locale) {
         String baseName = this.plugin.getPluginMeta().getName().toLowerCase(Locale.ROOT);
         ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale,
-                this.plugin.getClass().getClassLoader(), UTF8ResourceBundleControl.get());
+                this.plugin.getClass().getClassLoader());
 
         for (String key : bundle.keySet()) {
             Component component = MiniMessage.miniMessage().deserialize(bundle.getString(key));
