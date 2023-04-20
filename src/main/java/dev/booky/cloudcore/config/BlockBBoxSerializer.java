@@ -26,7 +26,16 @@ public class BlockBBoxSerializer implements TypeSerializer<BlockBBox> {
         }
 
         World world = node.node("dimension").get(World.class);
-        Objects.requireNonNull(world, "No dimension found for bounding box");
+        if (world == null) {
+            world = node.node("world").get(World.class);
+            if (world == null) {
+                world = node.node("corner1", "dimension").get(World.class);
+                if (world == null) {
+                    world = node.node("corner1", "world").get(World.class);
+                }
+            }
+        }
+        Objects.requireNonNull(world, "No dimension/world found for bounding box");
 
         BlockVector corner1 = node.node("corner1").get(BlockVector.class);
         Objects.requireNonNull(corner1, "No first corner found for bounding box");

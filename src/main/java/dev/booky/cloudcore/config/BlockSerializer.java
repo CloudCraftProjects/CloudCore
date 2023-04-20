@@ -29,7 +29,10 @@ public final class BlockSerializer implements TypeSerializer<Block> {
         Objects.requireNonNull(pos);
 
         World world = node.node("dimension").get(World.class);
-        Objects.requireNonNull(world);
+        if (world == null) {
+            world = node.node("world").get(World.class);
+        }
+        Objects.requireNonNull(world, "No dimension/world found");
 
         return world.getBlockAt(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ());
     }

@@ -27,7 +27,6 @@ public final class LocationSerializer implements TypeSerializer<Location> {
 
         World world = node.node("dimension").get(World.class);
         if (world == null) {
-            // old name for this
             world = node.node("world").get(World.class);
         }
         Objects.requireNonNull(world, "No dimension/world found");
