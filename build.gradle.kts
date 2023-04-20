@@ -10,7 +10,9 @@ plugins {
 group = "dev.booky"
 version = "1.0.0"
 
-val plugin: Configuration by configurations.creating { /**/ }
+val plugin: Configuration by configurations.creating {
+    isTransitive = false
+}
 
 repositories {
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots") {
@@ -22,11 +24,13 @@ repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
 }
 
+val commandApiVersion = "9.0.0-SNAPSHOT"
+
 dependencies {
     compileOnlyApi("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
 
     // command library
-    compileOnlyApi("dev.jorel:commandapi-bukkit-core:9.0.0-SNAPSHOT")
+    compileOnlyApi("dev.jorel:commandapi-bukkit-core:$commandApiVersion")
     compileOnlyApi("com.mojang:brigadier:1.0.18") // required for cmd api to compile
 
     // config library, included in paper
@@ -36,7 +40,7 @@ dependencies {
     api("org.bstats:bstats-bukkit:3.0.2")
 
     // testserver dependency plugins
-    plugin("dev.jorel:commandapi-bukkit-plugin:9.0.0-SNAPSHOT") { isTransitive = false }
+    plugin("dev.jorel:commandapi-bukkit-plugin:$commandApiVersion")
 }
 
 java {
