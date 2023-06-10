@@ -15,19 +15,13 @@ val plugin: Configuration by configurations.creating {
 }
 
 repositories {
-    maven("https://s01.oss.sonatype.org/content/repositories/snapshots") {
-        content {
-            includeGroup("dev.jorel")
-        }
-    }
-
     maven("https://repo.papermc.io/repository/maven-public/")
 }
 
-val commandApiVersion = "9.0.0-SNAPSHOT"
+val commandApiVersion = "9.0.2"
 
 dependencies {
-    compileOnlyApi("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT")
 
     // command library
     compileOnlyApi("dev.jorel:commandapi-bukkit-core:$commandApiVersion")
@@ -37,7 +31,7 @@ dependencies {
     compileOnlyApi("org.spongepowered:configurate-yaml:4.1.2")
 
     // metrics
-    api("org.bstats:bstats-bukkit:3.0.2")
+    implementation("org.bstats:bstats-bukkit:3.0.2")
 
     // testserver dependency plugins
     plugin("dev.jorel:commandapi-bukkit-plugin:$commandApiVersion")
@@ -65,7 +59,7 @@ bukkit {
 
 tasks {
     runServer {
-        minecraftVersion("1.19.4")
+        minecraftVersion("1.20")
         pluginJars.from(plugin.resolve())
     }
 
