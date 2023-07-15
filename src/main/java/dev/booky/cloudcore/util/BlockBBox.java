@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 import java.lang.ref.WeakReference;
 import java.util.Objects;
@@ -133,6 +134,10 @@ public final class BlockBBox implements Cloneable {
         return new BlockVector(this.maxX, this.maxY, this.maxZ);
     }
 
+    public final @Nullable World getOptionalWorld() {
+        return this.world.get();
+    }
+
     public final World getWorld() {
         return Objects.requireNonNull(this.world.get(), "World has been unloaded");
     }
@@ -150,24 +155,26 @@ public final class BlockBBox implements Cloneable {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof BlockBBox blockBBox)) return false;
-        if (minX != blockBBox.minX) return false;
-        if (minY != blockBBox.minY) return false;
-        if (minZ != blockBBox.minZ) return false;
-        if (maxX != blockBBox.maxX) return false;
-        if (maxY != blockBBox.maxY) return false;
-        if (maxZ != blockBBox.maxZ) return false;
-        return world.equals(blockBBox.world);
+        if (this.minX != blockBBox.minX) return false;
+        if (this.minY != blockBBox.minY) return false;
+        if (this.minZ != blockBBox.minZ) return false;
+        if (this.maxX != blockBBox.maxX) return false;
+        if (this.maxY != blockBBox.maxY) return false;
+        if (this.maxZ != blockBBox.maxZ) return false;
+        return Objects.equals(this.getOptionalWorld(), blockBBox.getOptionalWorld());
     }
 
     @Override
     public int hashCode() {
-        int result = world.hashCode();
-        result = 31 * result + minX;
-        result = 31 * result + minY;
-        result = 31 * result + minZ;
-        result = 31 * result + maxX;
-        result = 31 * result + maxY;
-        result = 31 * result + maxZ;
+        World world = this.getOptionalWorld();
+        int result = world == null ? 0 : world.hashCode();
+
+        result = 31 * result + this.minX;
+        result = 31 * result + this.minY;
+        result = 31 * result + this.minZ;
+        result = 31 * result + this.maxX;
+        result = 31 * result + this.maxY;
+        result = 31 * result + this.maxZ;
         return result;
     }
 
