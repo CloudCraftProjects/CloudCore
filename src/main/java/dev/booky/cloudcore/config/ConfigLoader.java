@@ -37,6 +37,7 @@ public final class ConfigLoader {
         return loaderBuilder.defaultOptions(opts -> opts.serializers(serializers.andThen(builder -> builder
                 .register(EnumSerializer.INSTANCE)
                 .register(NamespacedKeySerializer.INSTANCE)
+                .register(LocaleSerializer.INSTANCE)
                 .register(World.class, WorldSerializer.INSTANCE)
                 .register(BlockVector.class, BlockVectorSerializer.INSTANCE)
                 .register(Vector.class, VectorSerializer.INSTANCE)
