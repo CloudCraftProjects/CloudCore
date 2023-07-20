@@ -29,3 +29,9 @@ jobs:
           name: CloudCore-Artifacts
           path: build/libs/CloudCore-*
           if-no-files-found: error
+
+      - name: Publish to package registry
+        env:
+          GH_USERNAME: ${{ secrets.PUBLISH_USERNAME }}
+          GH_PASSWORD: ${{ secrets.PUBLISH_PASSWORD }}
+        run: ./gradlew publish --no-daemon -PgithubUsername=$GH_USERNAME -PgithubPassword=$GH_PASSWORD
