@@ -2,9 +2,9 @@ plugins {
     id("java-library")
     id("maven-publish")
 
-    id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
-    id("xyz.jpenilla.run-paper") version "1.0.6"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    alias(libs.plugins.pluginyml.bukkit)
+    alias(libs.plugins.runpaper)
+    alias(libs.plugins.shadow)
 }
 
 group = "dev.booky"
@@ -18,23 +18,21 @@ repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
 }
 
-val commandApiVersion = "9.0.3"
-
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
+    compileOnly(libs.paperapi)
 
     // command library
-    compileOnlyApi("dev.jorel:commandapi-bukkit-core:$commandApiVersion")
-    compileOnlyApi("com.mojang:brigadier:1.0.18") // required for cmd api to compile
+    compileOnlyApi(libs.commandapi.core)
+    compileOnlyApi(libs.brigadier) // required for cmd api to compile
 
     // config library, included in paper
-    compileOnlyApi("org.spongepowered:configurate-yaml:4.1.2")
+    compileOnlyApi(libs.configurate)
 
     // metrics
-    implementation("org.bstats:bstats-bukkit:3.0.2")
+    implementation(libs.bstats)
 
     // testserver dependency plugins
-    plugin("dev.jorel:commandapi-bukkit-plugin:$commandApiVersion")
+    plugin(libs.commandapi.plugin)
 }
 
 java {
@@ -66,12 +64,12 @@ bukkit {
 
 tasks {
     runServer {
-        minecraftVersion("1.20.1")
+        minecraftVersion(libs.versions.minecraft.get())
         pluginJars.from(plugin.resolve())
     }
 
     shadowJar {
-        relocate("org.bstats", "dev.booky.cloudcore.bstats")
+        relocate("org.bstats", "${project.group}.cloudcore.bstats")
     }
 
     assemble {

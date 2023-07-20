@@ -1,0 +1,25 @@
+[plugins]
+foojay-resolver-convention = "org.gradle.toolchains.foojay-resolver-convention:0.4.0"
+pluginyml-bukkit = "net.minecrell.plugin-yml.bukkit:0.6.0"
+runpaper = "xyz.jpenilla.run-paper:2.1.0"
+shadow = "com.github.johnrengelman.shadow:7.1.2"
+
+[versions]
+minecraft = "1.20.1"
+paperapi = "1.20.1-R0.1-SNAPSHOT"
+
+configurate = "4.1.2"
+bstats = "3.0.2"
+
+commandapi = "9.0.3"
+brigadier = "1.0.18"
+
+[libraries]
+paperapi = { module = "io.papermc.paper:paper-api", version.ref = "paperapi" }
+
+configurate = { module = "org.spongepowered:configurate-yaml", version.ref = "configurate" }
+bstats = { module = "org.bstats:bstats-bukkit", version.ref = "bstats" }
+
+commandapi-core = { module = "dev.jorel:commandapi-bukkit-core", version.ref = "commandapi" }
+commandapi-plugin = { module = "dev.jorel:commandapi-bukkit-plugin", version.ref = "commandapi" }
+brigadier = { module = "com.mojang:brigadier", version.ref = "brigadier" }
