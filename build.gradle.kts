@@ -18,7 +18,7 @@ repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
 }
 
-val commandApiVersion = "9.0.2"
+val commandApiVersion = "9.0.3"
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT")
