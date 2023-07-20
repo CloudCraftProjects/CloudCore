@@ -39,7 +39,10 @@ dependencies {
 
 java {
     withSourcesJar()
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+        vendor.set(JvmVendorSpec.ADOPTIUM)
+    }
 }
 
 publishing {
@@ -59,7 +62,7 @@ bukkit {
 
 tasks {
     runServer {
-        minecraftVersion("1.20")
+        minecraftVersion("1.20.1")
         pluginJars.from(plugin.resolve())
     }
 
