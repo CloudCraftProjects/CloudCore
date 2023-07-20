@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "dev.booky"
-version = "1.0.0"
+version = "1.0.1-SNAPSHOT"
 
 val plugin: Configuration by configurations.creating {
     isTransitive = false
@@ -50,11 +50,15 @@ publishing {
         artifactId = project.name.lowercase()
         from(components["java"])
     }
+    repositories.maven("https://maven.pkg.github.com/CloudCraftProjects/CloudCore") {
+        name = "github"
+        credentials(PasswordCredentials::class.java)
+    }
 }
 
 bukkit {
     main = "$group.cloudcore.CloudCoreMain"
-    apiVersion = "1.20.1"
+    apiVersion = "1.20"
     authors = listOf("booky10")
     depend = listOf("CommandAPI")
     load = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.PluginLoadOrder.POSTWORLD
