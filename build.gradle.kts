@@ -21,7 +21,7 @@ repositories {
 val commandApiVersion = "9.0.3"
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
 
     // command library
     compileOnlyApi("dev.jorel:commandapi-bukkit-core:$commandApiVersion")
@@ -51,7 +51,7 @@ publishing {
 
 bukkit {
     main = "$group.cloudcore.CloudCoreMain"
-    apiVersion = "1.20"
+    apiVersion = "1.20.1"
     authors = listOf("booky10")
     depend = listOf("CommandAPI")
     load = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.PluginLoadOrder.POSTWORLD
