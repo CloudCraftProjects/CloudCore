@@ -7,23 +7,23 @@ jobs:
     if: "!contains(github.event.head_commit.message, 'skip ci') && !contains(github.event.head_commit.message, 'ci skip')"
 
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Validate Gradle Wrapper
+      - name: Validate gradle wrapper
         uses: gradle/wrapper-validation-action@v1
 
-      - name: Setup Java 17
+      - name: Setup java 17
         uses: actions/setup-java@v3
         with:
           java-version: 17
           distribution: temurin
           cache: gradle
 
-      - name: Build Plugin
-        run: ./gradlew build --no-daemon
+      - name: Build plugin
+        run: ./gradlew build --no-daemon -PgithubUsername=${{ secrets.PUBLISH_USERNAME }} -PgithubPassword=${{ secrets.PUBLISH_PASSWORD }}
 
-      - name: Upload Plugin Jar
+      - name: Upload plugin jars
         uses: actions/upload-artifact@v3
         with:
           name: CloudCore-Artifacts
@@ -31,7 +31,4 @@ jobs:
           if-no-files-found: error
 
       - name: Publish to package registry
-        env:
-          GH_USERNAME: ${{ secrets.PUBLISH_USERNAME }}
-          GH_PASSWORD: ${{ secrets.PUBLISH_PASSWORD }}
-        run: ./gradlew publish --no-daemon -PgithubUsername=$GH_USERNAME -PgithubPassword=$GH_PASSWORD
+        run: ./gradlew publish --no-daemon -PgithubUsername=${{ secrets.PUBLISH_USERNAME }} -PgithubPassword=${{ secrets.PUBLISH_PASSWORD }}
