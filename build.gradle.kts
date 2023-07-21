@@ -58,6 +58,7 @@ bukkit {
     main = "$group.cloudcore.CloudCoreMain"
     apiVersion = "1.20"
     authors = listOf("booky10")
+    website = "https://github.com/CloudCraftProjects/CloudCore"
     depend = listOf("CommandAPI")
     load = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.PluginLoadOrder.POSTWORLD
 }
