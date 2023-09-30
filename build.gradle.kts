@@ -10,10 +10,6 @@ plugins {
 group = "dev.booky"
 version = "1.0.1-SNAPSHOT"
 
-val plugin: Configuration by configurations.creating {
-    isTransitive = false
-}
-
 repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
 }
@@ -30,9 +26,6 @@ dependencies {
 
     // metrics
     implementation(libs.bstats.bukkit)
-
-    // testserver dependency plugins
-    plugin(libs.commandapi.plugin)
 }
 
 java {
@@ -66,7 +59,15 @@ bukkit {
 tasks {
     runServer {
         minecraftVersion("1.20.2")
-        pluginJars.from(plugin.resolve())
+
+        downloadPlugins {
+            hangar("CommandAPI", libs.versions.commandapi.get())
+            github(
+                "PaperMC", "Debuggery",
+                "v${libs.versions.debuggery.get()}",
+                "debuggery-bukkit-${libs.versions.debuggery.get()}.jar"
+            )
+        }
     }
 
     shadowJar {
