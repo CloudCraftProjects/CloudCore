@@ -3,7 +3,7 @@ plugins {
     id("maven-publish")
 
     alias(libs.plugins.pluginyml.bukkit)
-    alias(libs.plugins.runpaper)
+    alias(libs.plugins.run.paper)
     alias(libs.plugins.shadow)
 }
 
@@ -19,17 +19,17 @@ repositories {
 }
 
 dependencies {
-    compileOnly(libs.paperapi)
+    compileOnly(libs.paper.api)
 
     // command library
     compileOnlyApi(libs.commandapi.core)
     compileOnlyApi(libs.brigadier) // required for cmd api to compile
 
     // config library, included in paper
-    compileOnlyApi(libs.configurate)
+    compileOnlyApi(libs.configurate.yaml)
 
     // metrics
-    implementation(libs.bstats)
+    implementation(libs.bstats.bukkit)
 
     // testserver dependency plugins
     plugin(libs.commandapi.plugin)
@@ -65,7 +65,7 @@ bukkit {
 
 tasks {
     runServer {
-        minecraftVersion(libs.versions.minecraft.get())
+        minecraftVersion("1.20.2")
         pluginJars.from(plugin.resolve())
     }
 
