@@ -1,13 +1,13 @@
 [versions]
 pluginyml = "0.6.0"
-runtask = "2.2.0"
+runtask = "2.2.3"
 shadow = "8.1.1"
 
-paper = "1.20.2-R0.1-SNAPSHOT"
+paper = "1.20.4-R0.1-SNAPSHOT"
 configurate = "4.1.2"
 bstats = "3.0.2"
 
-commandapi = "9.2.0"
+commandapi = "9.3.0"
 brigadier = "1.0.18"
 
 debuggery = "1.5.1"
