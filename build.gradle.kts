@@ -1,6 +1,7 @@
 plugins {
     id("java-library")
     id("maven-publish")
+    id("idea")
 
     alias(libs.plugins.pluginyml.bukkit)
     alias(libs.plugins.run.paper)
@@ -11,12 +12,7 @@ group = "dev.booky"
 version = "1.0.3-SNAPSHOT"
 
 repositories {
-    maven("https://repo.papermc.io/repository/maven-public/")
-    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
-        content {
-            includeGroup("net.kyori")
-        }
-    }
+    maven("https://repo.cloudcraftmc.de/public/")
 }
 
 dependencies {
@@ -46,8 +42,8 @@ publishing {
         artifactId = project.name.lowercase()
         from(components["java"])
     }
-    repositories.maven("https://maven.pkg.github.com/CloudCraftProjects/CloudCore") {
-        name = "github"
+    repositories.maven("https://repo.cloudcraftmc.de/releases") {
+        name = "horreo"
         credentials(PasswordCredentials::class.java)
     }
 }
