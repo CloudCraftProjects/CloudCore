@@ -15,23 +15,17 @@ https://nightly.link/CloudCraftProjects/CloudCore/workflows/build/master/CloudCo
 
 ## Usage
 
-Requires `githubUsername` and `githubPassword` (classic GitHub token with package registry access) to be set
-in `~/.gradle/gradle.properties`. Then add the following to your `build.gradle.kts`:
+Add the following to your `build.gradle.kts`:
 
 ```kotlin
 repositories {
-    maven("https://maven.pkg.github.com/CloudCraftProjects/*/") {
-        name = "github"
-        credentials(PasswordCredentials::class.java)
-    }
+    maven("https://repo.cloudcraftmc.de/releases/")
 }
 
 dependencies {
-    compileOnly("dev.booky:cloudcore:{VERSION}")
+    compileOnly("dev.booky:cloudcore:1.0.3-SNAPSHOT")
 }
 ```
-
-`{VERSION}` has to be replaced with the latest version from the latest available package.
 
 ## License
 
