@@ -1,6 +1,9 @@
 package dev.booky.cloudcore.util;
 // Created by booky10 in CraftAttack (13:27 05.10.22)
 
+import io.papermc.paper.math.BlockPosition;
+import io.papermc.paper.math.FinePosition;
+import io.papermc.paper.math.Position;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -19,11 +22,16 @@ public final class BlockBBox implements Cloneable {
     private final int maxX, maxY, maxZ;
 
     public BlockBBox(Location corner1, Location corner2) {
-        this(corner1.getWorld(), corner1.getX(), corner1.getY(), corner1.getZ(),
-                corner2.getX(), corner2.getY(), corner2.getZ());
+        this(corner1.getWorld(), corner1, corner2);
         if (corner1.getWorld() != corner2.getWorld()) {
             throw new IllegalStateException("Worlds mismatch between corners: corner1=" + corner1 + ", corner2=" + corner2);
         }
+    }
+
+    public BlockBBox(World world, Position corner1, Position corner2) {
+        this(world,
+                corner1.x(), corner1.y(), corner1.z(),
+                corner2.x(), corner2.y(), corner2.z());
     }
 
     public BlockBBox(World world, Vector corner1, Vector corner2) {
@@ -122,12 +130,24 @@ public final class BlockBBox implements Cloneable {
         return this.getWorld().getBlockAt(this.maxX, this.maxY, this.maxZ);
     }
 
+    public final FinePosition getCenterPos() {
+        return Position.fine(this.getCenterX(), this.getCenterY(), this.getCenterZ());
+    }
+
     public final Vector getCenterVec() {
         return new Vector(this.getCenterX(), this.getCenterY(), this.getCenterZ());
     }
 
+    public final BlockPosition getMinPos() {
+        return Position.block(this.minX, this.minY, this.minZ);
+    }
+
     public final BlockVector getMinVec() {
         return new BlockVector(this.minX, this.minY, this.minZ);
+    }
+
+    public final BlockPosition getMaxPos() {
+        return Position.block(this.maxX, this.maxY, this.maxZ);
     }
 
     public final BlockVector getMaxVec() {

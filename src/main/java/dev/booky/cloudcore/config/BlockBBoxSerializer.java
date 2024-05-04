@@ -2,8 +2,8 @@ package dev.booky.cloudcore.config;
 // Created by booky10 in CraftAttack (13:15 05.10.22)
 
 import dev.booky.cloudcore.util.BlockBBox;
+import io.papermc.paper.math.BlockPosition;
 import org.bukkit.World;
-import org.bukkit.util.BlockVector;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
@@ -37,10 +37,10 @@ public class BlockBBoxSerializer implements TypeSerializer<BlockBBox> {
         }
         Objects.requireNonNull(world, "No dimension/world found for bounding box");
 
-        BlockVector corner1 = node.node("corner1").get(BlockVector.class);
+        BlockPosition corner1 = node.node("corner1").get(BlockPosition.class);
         Objects.requireNonNull(corner1, "No first corner found for bounding box");
 
-        BlockVector corner2 = node.node("corner2").get(BlockVector.class);
+        BlockPosition corner2 = node.node("corner2").get(BlockPosition.class);
         Objects.requireNonNull(corner2, "No second corner found for bounding box");
 
         return new BlockBBox(world, corner1, corner2);
@@ -53,8 +53,8 @@ public class BlockBBoxSerializer implements TypeSerializer<BlockBBox> {
             return;
         }
 
-        node.node("dimension").set(obj.getWorld());
-        node.node("corner1").set(obj.getMinVec());
-        node.node("corner2").set(obj.getMaxVec());
+        node.node("dimension").set(World.class, obj.getWorld());
+        node.node("corner1").set(BlockPosition.class, obj.getMinPos());
+        node.node("corner2").set(BlockPosition.class, obj.getMaxPos());
     }
 }
