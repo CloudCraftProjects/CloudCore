@@ -3,7 +3,6 @@ package dev.booky.cloudcore.config;
 
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.util.Vector;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
@@ -31,11 +30,14 @@ public final class LocationSerializer implements TypeSerializer<Location> {
         }
         Objects.requireNonNull(world, "No dimension/world found");
 
-        float yaw = node.node("yaw").getFloat(0f);
-        float pitch = node.node("pitch").getFloat(0f);
-
-        Vector pos = Objects.requireNonNull(node.get(Vector.class));
-        return pos.toLocation(world, yaw, pitch);
+        return new Location(
+                world,
+                node.node("x").getDouble(),
+                node.node("y").getDouble(),
+                node.node("z").getDouble(),
+                node.node("yaw").getFloat(),
+                node.node("pitch").getFloat()
+        );
     }
 
     @Override
@@ -45,8 +47,10 @@ public final class LocationSerializer implements TypeSerializer<Location> {
             return;
         }
 
-        node.set(obj.toVector());
         node.node("dimension").set(obj.getWorld());
+        node.node("x").set(obj.getX());
+        node.node("y").set(obj.getY());
+        node.node("z").set(obj.getZ());
         if (obj.getYaw() != 0f || obj.getPitch() != 0f) {
             node.node("yaw").set(obj.getYaw());
             node.node("pitch").set(obj.getPitch());

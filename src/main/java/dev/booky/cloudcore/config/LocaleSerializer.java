@@ -21,7 +21,7 @@ public class LocaleSerializer extends ScalarSerializer<Locale> {
         String objStr = String.valueOf(obj);
         int separatorIndex = objStr.indexOf('_');
         if (separatorIndex == -1) {
-            return new Locale(objStr);
+            return Locale.of(objStr);
         }
 
         if (separatorIndex != objStr.lastIndexOf('_')) {
@@ -30,7 +30,7 @@ public class LocaleSerializer extends ScalarSerializer<Locale> {
 
         String lang = objStr.substring(0, separatorIndex);
         String country = objStr.substring(separatorIndex + 1);
-        return new Locale(lang, country);
+        return Locale.of(lang, country);
     }
 
     @Override

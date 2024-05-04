@@ -3,12 +3,16 @@ package dev.booky.cloudcore.config;
 
 import io.papermc.paper.math.BlockPosition;
 import io.papermc.paper.math.Position;
+import org.apache.commons.lang3.StringUtils;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
 
 import java.lang.reflect.Type;
+import java.util.Arrays;
+
+import static java.lang.Integer.parseInt;
 
 public final class BlockPositionSerializer implements TypeSerializer<BlockPosition> {
 
@@ -22,22 +26,22 @@ public final class BlockPositionSerializer implements TypeSerializer<BlockPositi
         if (node.virtual()) {
             return null;
         }
-
-        int x = node.node("x").getInt();
-        int y = node.node("y").getInt();
-        int z = node.node("z").getInt();
-        return Position.block(x, y, z);
+        if (node.isMap()) {
+            int x = node.node("x").getInt();
+            int y = node.node("y").getInt();
+            int z = node.node("z").getInt();
+            return Position.block(x, y, z);
+        }
+        String[] coords = StringUtils.split(String.valueOf(node.raw()), ':');
+        if (coords.length != 3) {
+            throw new SerializationException("Illegal block position coords: " + Arrays.toString(coords));
+        }
+        return Position.block(parseInt(coords[0]), parseInt(coords[1]), parseInt(coords[2]));
     }
 
     @Override
     public void serialize(Type type, @Nullable BlockPosition obj, ConfigurationNode node) throws SerializationException {
-        if (obj == null) {
-            node.set(null);
-            return;
-        }
+        node.set(obj == null ? null : obj.blockX() + ":" + obj.blockY() + ":" + obj.blockZ());
 
-        node.node("x").set(obj.blockX());
-        node.node("y").set(obj.blockY());
-        node.node("z").set(obj.blockZ());
     }
 }

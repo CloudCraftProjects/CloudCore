@@ -5,7 +5,7 @@ import dev.booky.cloudcore.util.BlockBBox;
 import dev.booky.cloudcore.util.EntityPosition;
 import io.leangen.geantyref.TypeToken;
 import io.papermc.paper.math.BlockPosition;
-import io.papermc.paper.math.Position;
+import io.papermc.paper.math.FinePosition;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -46,13 +46,16 @@ public final class ConfigLoader {
                 .register(BlockBBox.class, BlockBBoxSerializer.INSTANCE)
                 .register(EntityPosition.class, EntityPositionSerializer.INSTANCE)
                 .register(BlockPosition.class, BlockPositionSerializer.INSTANCE)
-                .register(Position.class, PositionSerializer.INSTANCE))));
+                .register(FinePosition.class, FinePositionSerializer.INSTANCE))));
     }
 
     @ApiStatus.Internal
-    public static YamlConfigurationLoader createLoader(Path path, Consumer<TypeSerializerCollection.Builder> serializers) {
-        return LOADER_CACHE.computeIfAbsent(path, $ -> setDefaultSerializers(YamlConfigurationLoader.builder(), serializers)
-                .path(path).nodeStyle(NodeStyle.BLOCK).indent(2).build());
+    public static YamlConfigurationLoader createLoader(
+            Path path, Consumer<TypeSerializerCollection.Builder> serializers
+    ) {
+        return LOADER_CACHE.computeIfAbsent(path, $ ->
+                setDefaultSerializers(YamlConfigurationLoader.builder(), serializers)
+                        .path(path).nodeStyle(NodeStyle.BLOCK).indent(2).build());
     }
 
     private static <T> Supplier<T> defSupplier(Class<T> clazz) {
@@ -71,7 +74,9 @@ public final class ConfigLoader {
         return loadObject(path, clazz, NO_OP_SERIALIZERS);
     }
 
-    public static <T> T loadObject(Path path, Class<T> clazz, Consumer<TypeSerializerCollection.Builder> serializers) {
+    public static <T> T loadObject(
+            Path path, Class<T> clazz, Consumer<TypeSerializerCollection.Builder> serializers
+    ) {
         return loadObject(path, TypeToken.get(clazz), defSupplier(clazz), serializers);
     }
 
@@ -79,8 +84,10 @@ public final class ConfigLoader {
         return loadObject(path, type, defSupplier, NO_OP_SERIALIZERS);
     }
 
-    public static <T> T loadObject(Path path, TypeToken<T> type, Supplier<T> defSupplier,
-                                   Consumer<TypeSerializerCollection.Builder> serializers) {
+    public static <T> T loadObject(
+            Path path, TypeToken<T> type, Supplier<T> defSupplier,
+            Consumer<TypeSerializerCollection.Builder> serializers
+    ) {
         try {
             YamlConfigurationLoader loader = createLoader(path, serializers);
             T obj;
@@ -106,7 +113,9 @@ public final class ConfigLoader {
     }
 
     @SuppressWarnings("unchecked") // idk how this is unchecked
-    public static <T> void saveObject(Path path, T obj, Consumer<TypeSerializerCollection.Builder> serializers) {
+    public static <T> void saveObject(
+            Path path, T obj, Consumer<TypeSerializerCollection.Builder> serializers
+    ) {
         Class<T> clazz = (Class<T>) obj.getClass();
         saveObject(path, TypeToken.get(clazz), obj, serializers);
     }
@@ -115,7 +124,10 @@ public final class ConfigLoader {
         saveObject(path, type, obj, NO_OP_SERIALIZERS);
     }
 
-    public static <T> void saveObject(Path path, TypeToken<T> type, T obj, Consumer<TypeSerializerCollection.Builder> serializers) {
+    public static <T> void saveObject(
+            Path path, TypeToken<T> type, T obj,
+            Consumer<TypeSerializerCollection.Builder> serializers
+    ) {
         try {
             YamlConfigurationLoader loader = createLoader(path, serializers);
             CommentedConfigurationNode node = loader.createNode();

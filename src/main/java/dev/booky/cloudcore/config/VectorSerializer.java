@@ -21,12 +21,11 @@ public final class VectorSerializer implements TypeSerializer<Vector> {
         if (node.virtual()) {
             return null;
         }
-
-        Vector vector = new Vector();
-        vector.setX(node.node("x").getDouble(0d));
-        vector.setY(node.node("y").getDouble(0d));
-        vector.setZ(node.node("z").getDouble(0d));
-        return vector;
+        return new Vector(
+                node.node("x").getDouble(),
+                node.node("y").getDouble(),
+                node.node("z").getDouble()
+        );
     }
 
     @Override
@@ -35,7 +34,6 @@ public final class VectorSerializer implements TypeSerializer<Vector> {
             node.set(null);
             return;
         }
-
         node.node("x").set(obj.getX());
         node.node("y").set(obj.getY());
         node.node("z").set(obj.getZ());

@@ -1,9 +1,10 @@
 package dev.booky.cloudcore.config;
 // Created by booky10 in CloudCore (14:56 14.03.23)
 
+import io.papermc.paper.math.BlockPosition;
+import io.papermc.paper.math.Position;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.util.BlockVector;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
@@ -25,8 +26,9 @@ public final class BlockSerializer implements TypeSerializer<Block> {
             return null;
         }
 
-        BlockVector pos = node.get(BlockVector.class);
-        Objects.requireNonNull(pos);
+        BlockPosition pos = node.hasChild("pos")
+                ? node.node("pos").get(BlockPosition.class, Position.BLOCK_ZERO)
+                : node.get(BlockPosition.class, Position.BLOCK_ZERO);
 
         World world = node.node("dimension").get(World.class);
         if (world == null) {
@@ -34,7 +36,7 @@ public final class BlockSerializer implements TypeSerializer<Block> {
         }
         Objects.requireNonNull(world, "No dimension/world found");
 
-        return world.getBlockAt(pos.getBlockX(), pos.getBlockY(), pos.getBlockZ());
+        return world.getBlockAt(pos.blockX(), pos.blockY(), pos.blockZ());
     }
 
     @Override
@@ -44,7 +46,7 @@ public final class BlockSerializer implements TypeSerializer<Block> {
             return;
         }
 
-        node.set(new BlockVector(obj.getX(), obj.getY(), obj.getZ()));
-        node.node("dimension").set(obj.getWorld());
+        node.node("pos").set(BlockPosition.class, Position.block(obj.getX(), obj.getY(), obj.getZ()));
+        node.node("dimension").set(World.class, obj.getWorld());
     }
 }

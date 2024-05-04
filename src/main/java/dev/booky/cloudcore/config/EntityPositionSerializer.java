@@ -2,14 +2,12 @@ package dev.booky.cloudcore.config;
 // Created by booky10 in CloudCore (03:54 15.07.23)
 
 import dev.booky.cloudcore.util.EntityPosition;
-import io.papermc.paper.math.Position;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
 
 import java.lang.reflect.Type;
-import java.util.Objects;
 
 public final class EntityPositionSerializer implements TypeSerializer<EntityPosition> {
 
@@ -23,12 +21,13 @@ public final class EntityPositionSerializer implements TypeSerializer<EntityPosi
         if (node.virtual()) {
             return null;
         }
-
-        float yaw = node.node("yaw").getFloat();
-        float pitch = node.node("pitch").getFloat();
-
-        Position pos = Objects.requireNonNull(node.get(Position.class));
-        return EntityPosition.entity(pos, yaw, pitch);
+        return EntityPosition.entity(
+                node.node("x").getDouble(),
+                node.node("y").getDouble(),
+                node.node("z").getDouble(),
+                node.node("yaw").getFloat(),
+                node.node("pitch").getFloat()
+        );
     }
 
     @Override
@@ -37,8 +36,9 @@ public final class EntityPositionSerializer implements TypeSerializer<EntityPosi
             node.set(null);
             return;
         }
-
-        node.set(Position.class, obj);
+        node.node("x").set(obj.x());
+        node.node("y").set(obj.y());
+        node.node("z").set(obj.z());
         if (obj.yaw() != 0f || obj.pitch() != 0f) {
             node.node("yaw").set(obj.yaw());
             node.node("pitch").set(obj.pitch());
