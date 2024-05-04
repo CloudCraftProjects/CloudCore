@@ -8,10 +8,15 @@ plugins {
 }
 
 group = "dev.booky"
-version = "1.0.2-SNAPSHOT"
+version = "1.0.3-SNAPSHOT"
 
 repositories {
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+        content {
+            includeGroup("net.kyori")
+        }
+    }
 }
 
 dependencies {
@@ -31,7 +36,7 @@ dependencies {
 java {
     withSourcesJar()
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        languageVersion = JavaLanguageVersion.of(21)
         vendor = JvmVendorSpec.ADOPTIUM
     }
 }
@@ -49,16 +54,15 @@ publishing {
 
 bukkit {
     main = "$group.cloudcore.CloudCoreMain"
-    apiVersion = "1.20"
+    apiVersion = "1.20.5"
     authors = listOf("booky10")
     website = "https://github.com/CloudCraftProjects/CloudCore"
     depend = listOf("CommandAPI")
-    load = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.PluginLoadOrder.POSTWORLD
 }
 
 tasks {
     runServer {
-        minecraftVersion("1.20.4")
+        minecraftVersion("1.20.6")
 
         downloadPlugins {
             hangar("CommandAPI", libs.versions.commandapi.get())

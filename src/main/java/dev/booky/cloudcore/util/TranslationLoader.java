@@ -108,7 +108,7 @@ public final class TranslationLoader implements Translator {
         // copied from TranslationRegistryImpl.Translation#translate
         Component translated = translation.get(locale);
         if (translated == null) {
-            translated = translation.get(new Locale(locale.getLanguage())); // try without country
+            translated = translation.get(Locale.of(locale.getLanguage())); // try without country
             if (translated == null) {
                 translated = translation.get(DEFAULT_LOCALE); // try local default locale
                 if (translated == null) {

@@ -1,21 +1,21 @@
 [versions]
 pluginyml = "0.6.0"
-runtask = "2.2.3"
-shadow = "8.1.1"
+runtask = "2.3.0"
+shadow = "8.1.7"
 
-paper = "1.20.4-R0.1-SNAPSHOT"
+paper = "1.20.6-R0.1-SNAPSHOT"
 configurate = "4.1.2"
 bstats = "3.0.2"
 
-commandapi = "9.3.0"
-brigadier = "1.0.18"
+commandapi = "9.4.0"
+brigadier = "1.2.9"
 
 debuggery = "1.5.1"
 
 [plugins]
 pluginyml-bukkit = { id = "net.minecrell.plugin-yml.bukkit", version.ref = "pluginyml" }
 run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "runtask" }
-shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
+shadow = { id = "io.github.goooler.shadow", version.ref = "shadow" }
 
 [libraries]
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
