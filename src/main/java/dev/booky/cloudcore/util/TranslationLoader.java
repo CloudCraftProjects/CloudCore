@@ -5,6 +5,7 @@ import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextReplacementConfig;
 import net.kyori.adventure.text.TranslatableComponent;
+import net.kyori.adventure.text.TranslationArgument;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.translation.GlobalTranslator;
@@ -117,7 +118,7 @@ public final class TranslationLoader implements Translator {
             }
         }
 
-        Component rendered = this.replaceArgs(locale, translated, component.args());
+        Component rendered = this.replaceArgs(locale, translated, component.arguments());
         if (component.hasStyling()) {
             rendered = rendered.applyFallbackStyle(component.style());
 
@@ -141,7 +142,7 @@ public final class TranslationLoader implements Translator {
         return rendered;
     }
 
-    private Component replaceArgs(Locale locale, Component component, List<Component> args) {
+    private Component replaceArgs(Locale locale, Component component, List<TranslationArgument> args) {
         if (args.isEmpty()) {
             return component;
         }
@@ -152,7 +153,7 @@ public final class TranslationLoader implements Translator {
                     try {
                         int index = Integer.parseInt(result.group(1));
                         if (index < args.size()) {
-                            Component arg = GlobalTranslator.render(args.get(index), locale);
+                            Component arg = GlobalTranslator.render(args.get(index).asComponent(), locale);
                             return builder.content("").append(arg);
                         }
                     } catch (NumberFormatException ignored) {
