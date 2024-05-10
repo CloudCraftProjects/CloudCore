@@ -1,20 +1,27 @@
 import net.kyori.indra.IndraPlugin
+import org.jetbrains.gradle.ext.IdeaExtPlugin
 
 plugins {
     id("java-library")
     id("maven-publish")
+
     id("idea")
+    id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.8"
 
     alias(libs.plugins.pluginyml.bukkit)
     alias(libs.plugins.run.paper)
+    alias(libs.plugins.run.velocity) apply false
     alias(libs.plugins.shadow)
+
     alias(libs.plugins.indra)
+    alias(libs.plugins.blossom) apply false
 }
 
 allprojects {
     apply<JavaLibraryPlugin>()
     apply<MavenPublishPlugin>()
     apply<IdeaPlugin>()
+    apply<IdeaExtPlugin>()
     apply<IndraPlugin>()
 
     group = "dev.booky"
