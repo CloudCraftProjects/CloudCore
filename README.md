@@ -1,12 +1,15 @@
 # CloudCore
 
-Minecraft paper library plugin which most new plugins of CloudCraft depend on.
+Minecraft paper/velocity library plugin which most new plugins of CloudCraft depend on.
 
 ## Content
 
-- Configurate yaml based configuration loaded (+ some default serializers)
-- Block bounding box (with a defined world)
+- Configurate based configuration loading with some default serializers
 - Simple adventure translation loader
+
+Bukkit specific:
+
+- Block bounding box (with a defined world)
 - EntityPosition, extends Paper's new (experimental) Position API with yaw and pitch
 
 ## Download
@@ -23,7 +26,10 @@ repositories {
 }
 
 dependencies {
-    compileOnly("dev.booky:cloudcore:1.0.3-SNAPSHOT")
+    // bukkit dependency
+    compileOnly("dev.booky:cloudcore:1.1.0-SNAPSHOT")
+    // velocity dependency
+    compileOnly("dev.booky:cloudcore-velocity:1.1.0-SNAPSHOT")
 }
 ```
 
