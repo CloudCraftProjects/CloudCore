@@ -10,8 +10,8 @@ import jakarta.inject.Singleton;
 import org.bstats.velocity.Metrics;
 
 @Plugin(
-        id = "cloudutilities",
-        name = "CloudUtilities",
+        id = "cloudcore",
+        name = "CloudCore",
         version = BuildConstants.PLUGIN_VERSION,
         authors = "booky10"
 )
