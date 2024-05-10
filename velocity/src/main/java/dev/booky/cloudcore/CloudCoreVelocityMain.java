@@ -16,12 +16,12 @@ import org.bstats.velocity.Metrics;
         authors = "booky10"
 )
 @Singleton
-public class CloudCoreMain {
+public class CloudCoreVelocityMain {
 
     private final Metrics.Factory metrics;
 
     @Inject
-    public CloudCoreMain(
+    public CloudCoreVelocityMain(
             Metrics.Factory metrics
     ) {
         this.metrics = metrics;

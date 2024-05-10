@@ -4,9 +4,9 @@ package dev.booky.cloudcore;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class CloudCoreMain extends JavaPlugin {
+public class CloudCoreBukkitMain extends JavaPlugin {
 
-    public CloudCoreMain() {
+    public CloudCoreBukkitMain() {
         try {
             Class.forName("io.papermc.paper.configuration.Configuration");
         } catch (ClassNotFoundException exception) {
