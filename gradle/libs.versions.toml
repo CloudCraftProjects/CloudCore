@@ -4,6 +4,7 @@ runtask = "2.3.0"
 shadow = "8.1.7"
 indra = "3.1.3"
 blossom = "2.1.0"
+ideaext = "1.1.8"
 
 # common
 adventure = "4.17.0"
@@ -26,6 +27,7 @@ run-velocity = { id = "xyz.jpenilla.run-velocity", version.ref = "runtask" }
 shadow = { id = "io.github.goooler.shadow", version.ref = "shadow" }
 indra = { id = "net.kyori.indra", version.ref = "indra" }
 blossom = { id = "net.kyori.blossom", version.ref = "blossom" }
+ideaext = { id = "org.jetbrains.gradle.plugin.idea-ext", version.ref = "ideaext" }
 
 [libraries]
 # common

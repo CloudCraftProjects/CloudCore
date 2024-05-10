@@ -4,9 +4,7 @@ import org.jetbrains.gradle.ext.IdeaExtPlugin
 plugins {
     id("java-library")
     id("maven-publish")
-
-    id("idea")
-    id("org.jetbrains.gradle.plugin.idea-ext") version "1.1.8"
+    alias(libs.plugins.ideaext)
 
     alias(libs.plugins.pluginyml.bukkit)
     alias(libs.plugins.run.paper)
@@ -20,7 +18,6 @@ plugins {
 allprojects {
     apply<JavaLibraryPlugin>()
     apply<MavenPublishPlugin>()
-    apply<IdeaPlugin>()
     apply<IdeaExtPlugin>()
     apply<IndraPlugin>()
 
