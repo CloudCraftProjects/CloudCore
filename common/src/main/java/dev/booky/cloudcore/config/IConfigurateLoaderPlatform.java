@@ -2,6 +2,7 @@ package dev.booky.cloudcore.config;
 // Created by booky10 in CloudCore (14:08 10.05.2024.)
 
 import io.leangen.geantyref.TypeToken;
+import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
 import org.spongepowered.configurate.serialize.TypeSerializerCollection;
 
@@ -20,7 +21,8 @@ interface IConfigurateLoaderPlatform {
         return builder
                 .register(Component.class, ComponentSerializer.INSTANCE)
                 .register(new TypeToken<Enum<?>>() {}, EnumSerializer.INSTANCE)
-                .register(Locale.class, LocaleSerializer.INSTANCE);
+                .register(Locale.class, LocaleSerializer.INSTANCE)
+                .register(Key.class, KeySerializer.INSTANCE);
     }
 
     class DummyConfigurateLoaderPlatform implements IConfigurateLoaderPlatform {}
