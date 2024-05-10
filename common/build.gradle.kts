@@ -1,3 +1,3 @@
 dependencies {
-    compileOnly(libs.adventure.api)
+    compileOnly(libs.bundles.adventure)
 }

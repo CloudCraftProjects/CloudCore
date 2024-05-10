@@ -47,6 +47,7 @@ subprojects {
 }
 
 dependencies {
+    api(projects.cloudCoreCommon)
     compileOnly(libs.paper.api)
 
     // command library
