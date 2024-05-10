@@ -61,6 +61,8 @@ public class ConfigurateLoader<
         };
     }
 
+    // object loading
+
     public <T> T loadObject(Path path, Class<T> clazz) {
         return this.loadObject(path, clazz, buildConstructor(clazz), SAVE_BY_DEFAULT);
     }
@@ -111,15 +113,53 @@ public class ConfigurateLoader<
             T defaultedObject = Objects.requireNonNullElseGet(initialObject, constructor);
 
             if (save) {
-                ConfigurationNode node = loader.createNode();
-                node.set(type, defaultedObject);
-                loader.save(node);
+                this.saveObject(loader, defaultedObject, type);
             }
             return defaultedObject;
         } catch (IOException exception) {
-            throw new RuntimeException("Error while loading object from " + this + " with type " + type.getType(), exception);
+            throw new RuntimeException("Error while loading object from "
+                    + this + " (loader: " + loader + ") with type " + type.getType(), exception);
         }
     }
+
+    // object saving
+
+    @SuppressWarnings("unchecked") // not unchecked
+    public <T> void saveObject(Path path, T object) {
+        Class<T> clazz = (Class<T>) object.getClass();
+        this.saveObject(path, object, clazz);
+    }
+
+    public <T> void saveObject(Path path, T object, Class<T> clazz) {
+        this.saveObject(path, object, TypeToken.get(clazz));
+    }
+
+    public <T> void saveObject(Path path, T object, TypeToken<T> type) {
+        this.saveObject(this.getLoader(path), object, type);
+    }
+
+    @SuppressWarnings("unchecked") // not unchecked
+    public <T> void saveObject(L loader, T object) {
+        Class<T> clazz = (Class<T>) object.getClass();
+        this.saveObject(loader, object, clazz);
+    }
+
+    public <T> void saveObject(L loader, T object, Class<T> clazz) {
+        this.saveObject(loader, object, TypeToken.get(clazz));
+    }
+
+    public <T> void saveObject(L loader, T object, TypeToken<T> type) {
+        try {
+            ConfigurationNode node = loader.createNode();
+            node.set(type, object);
+            loader.save(node);
+        } catch (IOException exception) {
+            throw new RuntimeException("Error while saving object to "
+                    + this + " (loader: " + loader + ") with type " + type.getType(), exception);
+        }
+    }
+
+    // loader building
 
     public L getLoader(
             @Nullable Callable<BufferedReader> reader,
