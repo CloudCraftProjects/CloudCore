@@ -49,7 +49,8 @@ public final class ConfigLoader {
                 .register(BlockBBox.class, BlockBBoxSerializer.INSTANCE)
                 .register(EntityPosition.class, EntityPositionSerializer.INSTANCE)
                 .register(BlockPosition.class, BlockPositionSerializer.INSTANCE)
-                .register(FinePosition.class, FinePositionSerializer.INSTANCE))));
+                .register(FinePosition.class, FinePositionSerializer.INSTANCE)
+                .register(Component.class, ComponentSerializer.INSTANCE))));
     }
 
     @ApiStatus.Internal
