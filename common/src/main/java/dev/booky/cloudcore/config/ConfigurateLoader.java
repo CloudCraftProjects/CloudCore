@@ -200,8 +200,6 @@ public class ConfigurateLoader<
             return new ConfigurateLoader<>(this.builder, this.configurator);
         }
 
-        // TODO: deprecate ConfigLoader, redirect ConfigLoader to this
-
         public Builder<L, B> withAllDefaultSerializers() {
             return this.withSerializers(PLATFORM_SERIALIZERS);
         }
