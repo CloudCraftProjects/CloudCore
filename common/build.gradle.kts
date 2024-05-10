@@ -1,4 +1,4 @@
 dependencies {
-    compileOnly(libs.bundles.adventure)
-    compileOnly(libs.configurate.yaml)
+    compileOnlyApi(libs.bundles.adventure)
+    compileOnlyApi(libs.configurate.yaml)
 }

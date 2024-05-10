@@ -1,3 +1,5 @@
+import net.kyori.indra.IndraPlugin
+
 plugins {
     id("java-library")
     id("maven-publish")
@@ -6,13 +8,14 @@ plugins {
     alias(libs.plugins.pluginyml.bukkit)
     alias(libs.plugins.run.paper)
     alias(libs.plugins.shadow)
-    alias(libs.plugins.indra) apply false
+    alias(libs.plugins.indra)
 }
 
 allprojects {
     apply<JavaLibraryPlugin>()
     apply<MavenPublishPlugin>()
     apply<IdeaPlugin>()
+    apply<IndraPlugin>()
 
     group = "dev.booky"
     version = "1.0.3-SNAPSHOT"
@@ -21,9 +24,14 @@ allprojects {
         maven("https://repo.cloudcraftmc.de/public/")
     }
 
+    indra {
+        javaVersions {
+            target(21)
+        }
+    }
+
     java {
         toolchain {
-            languageVersion = JavaLanguageVersion.of(21)
             vendor = JvmVendorSpec.ADOPTIUM
         }
     }
@@ -37,6 +45,10 @@ allprojects {
             name = "horreo"
             credentials(PasswordCredentials::class.java)
         }
+    }
+
+    tasks.withType<Jar> {
+        archiveBaseName = project.name
     }
 }
 
@@ -53,9 +65,6 @@ dependencies {
     // command library
     compileOnlyApi(libs.commandapi.core)
     compileOnlyApi(libs.brigadier) // required for cmd api to compile
-
-    // config library, included in paper
-    compileOnlyApi(libs.configurate.yaml)
 
     // metrics
     implementation(libs.bstats.bukkit)
