@@ -6,6 +6,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.loader.AbstractConfigurationLoader;
 import org.spongepowered.configurate.serialize.TypeSerializerCollection;
+import org.spongepowered.configurate.yaml.NodeStyle;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
 import java.io.BufferedReader;
@@ -37,7 +38,8 @@ public class ConfigurateLoader<
     }
 
     public static Builder<YamlConfigurationLoader, YamlConfigurationLoader.Builder> yamlLoader() {
-        return loader(YamlConfigurationLoader::builder);
+        return loader(YamlConfigurationLoader::builder)
+                .configure(builder -> builder.nodeStyle(NodeStyle.BLOCK).indent(2));
     }
 
     public static <
