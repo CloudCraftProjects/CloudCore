@@ -14,13 +14,14 @@ public final class EnumSerializer extends ScalarSerializer<Enum<?>> {
     public static final EnumSerializer INSTANCE = new EnumSerializer();
 
     private EnumSerializer() {
-        super(new TypeToken<Enum<?>>() { /**/ });
+        super(new TypeToken<Enum<?>>() {});
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public Enum<?> deserialize(Type type, Object obj) throws SerializationException {
-        return Enum.valueOf(GenericTypeReflector.erase(type).asSubclass(Enum.class), String.valueOf(obj));
+        Class<? extends Enum> enumClass = GenericTypeReflector.erase(type).asSubclass(Enum.class);
+        return Enum.valueOf(enumClass, String.valueOf(obj));
     }
 
     @Override

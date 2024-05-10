@@ -1,6 +1,7 @@
 package dev.booky.cloudcore.config;
 // Created by booky10 in CloudCore (13:15 18.07.23)
 
+import net.kyori.adventure.translation.Translator;
 import org.spongepowered.configurate.serialize.ScalarSerializer;
 import org.spongepowered.configurate.serialize.SerializationException;
 
@@ -18,19 +19,7 @@ public class LocaleSerializer extends ScalarSerializer<Locale> {
 
     @Override
     public Locale deserialize(Type type, Object obj) throws SerializationException {
-        String objStr = String.valueOf(obj);
-        int separatorIndex = objStr.indexOf('_');
-        if (separatorIndex == -1) {
-            return Locale.of(objStr);
-        }
-
-        if (separatorIndex != objStr.lastIndexOf('_')) {
-            throw new UnsupportedOperationException("Unsupported locale string: " + objStr);
-        }
-
-        String lang = objStr.substring(0, separatorIndex);
-        String country = objStr.substring(separatorIndex + 1);
-        return Locale.of(lang, country);
+        return Translator.parseLocale(String.valueOf(obj));
     }
 
     @Override
