@@ -25,7 +25,7 @@ allprojects {
     apply<IndraPlugin>()
 
     group = "dev.booky"
-    version = "1.0.3-SNAPSHOT"
+    version = "1.1.0-SNAPSHOT"
 
     repositories {
         maven("https://repo.cloudcraftmc.de/public/")
@@ -45,7 +45,7 @@ allprojects {
 
     publishing {
         publications.create<MavenPublication>("maven") {
-            artifactId = setOf(rootProject, project).joinToString("-") { it.name }.lowercase()
+            artifactId = project.name.lowercase()
             from(components["java"])
         }
         repositories.maven("https://repo.cloudcraftmc.de/releases") {
