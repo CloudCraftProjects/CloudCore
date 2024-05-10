@@ -19,6 +19,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static dev.booky.cloudcore.config.IConfigurateLoaderPlatform.PLATFORM;
+
 public class ConfigurateLoader<
         L extends AbstractConfigurationLoader<?>,
         B extends AbstractConfigurationLoader.Builder<B, L>
@@ -144,6 +146,9 @@ public class ConfigurateLoader<
             B extends AbstractConfigurationLoader.Builder<B, L>
             > {
 
+        private static final TypeSerializerCollection PLATFORM_SERIALIZERS
+                = PLATFORM.buildDefaultSerializers(TypeSerializerCollection.builder()).build();
+
         private final Supplier<B> builder;
         private Function<B, B> configurator = Function.identity();
 
@@ -155,8 +160,11 @@ public class ConfigurateLoader<
             return new ConfigurateLoader<>(this.builder, this.configurator);
         }
 
-        // TODO: create platform services to provide all default serializers
         // TODO: deprecate ConfigLoader, redirect ConfigLoader to this
+
+        public Builder<L, B> withAllDefaultSerializers() {
+            return this.withSerializers(PLATFORM_SERIALIZERS);
+        }
 
         public Builder<L, B> withSerializers(TypeSerializerCollection serializers) {
             return this.withSerializers(builder -> builder.registerAll(serializers));
