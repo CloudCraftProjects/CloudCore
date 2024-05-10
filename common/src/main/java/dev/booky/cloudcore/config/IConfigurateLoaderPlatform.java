@@ -4,13 +4,15 @@ package dev.booky.cloudcore.config;
 import io.leangen.geantyref.TypeToken;
 import net.kyori.adventure.key.Key;
 import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.ApiStatus;
 import org.spongepowered.configurate.serialize.TypeSerializerCollection;
 
 import java.util.Locale;
 
 import static net.kyori.adventure.util.Services.serviceWithFallback;
 
-interface IConfigurateLoaderPlatform {
+@ApiStatus.Internal
+public interface IConfigurateLoaderPlatform {
 
     IConfigurateLoaderPlatform DUMMY = new DummyConfigurateLoaderPlatform();
     IConfigurateLoaderPlatform PLATFORM = serviceWithFallback(IConfigurateLoaderPlatform.class).orElse(DUMMY);
