@@ -4,14 +4,15 @@ package dev.booky.cloudcore.config;
 import net.kyori.adventure.translation.Translator;
 import org.spongepowered.configurate.serialize.ScalarSerializer;
 import org.spongepowered.configurate.serialize.SerializationException;
+import org.spongepowered.configurate.serialize.TypeSerializer;
 
 import java.lang.reflect.Type;
 import java.util.Locale;
 import java.util.function.Predicate;
 
-public class LocaleSerializer extends ScalarSerializer<Locale> {
+public final class LocaleSerializer extends ScalarSerializer<Locale> {
 
-    public static final LocaleSerializer INSTANCE = new LocaleSerializer();
+    public static final TypeSerializer<Locale> INSTANCE = new LocaleSerializer();
 
     private LocaleSerializer() {
         super(Locale.class);

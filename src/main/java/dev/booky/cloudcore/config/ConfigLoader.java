@@ -6,7 +6,9 @@ import dev.booky.cloudcore.util.EntityPosition;
 import io.leangen.geantyref.TypeToken;
 import io.papermc.paper.math.BlockPosition;
 import io.papermc.paper.math.FinePosition;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.util.BlockVector;
@@ -23,6 +25,7 @@ import java.lang.reflect.Constructor;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -35,9 +38,9 @@ public final class ConfigLoader {
     @ApiStatus.Internal
     public static <T extends AbstractConfigurationLoader.Builder<T, ?>> T setDefaultSerializers(T loaderBuilder, Consumer<TypeSerializerCollection.Builder> serializers) {
         return loaderBuilder.defaultOptions(opts -> opts.serializers(serializers.andThen(builder -> builder
-                .register(EnumSerializer.INSTANCE)
-                .register(NamespacedKeySerializer.INSTANCE)
-                .register(LocaleSerializer.INSTANCE)
+                .register(new TypeToken<Enum<?>>() {}, EnumSerializer.INSTANCE)
+                .register(NamespacedKey.class, NamespacedKeySerializer.INSTANCE)
+                .register(Locale.class, LocaleSerializer.INSTANCE)
                 .register(World.class, WorldSerializer.INSTANCE)
                 .register(BlockVector.class, BlockVectorSerializer.INSTANCE)
                 .register(Vector.class, VectorSerializer.INSTANCE)

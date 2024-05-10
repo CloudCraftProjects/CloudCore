@@ -11,7 +11,7 @@ import java.lang.reflect.Type;
 
 public final class EntityPositionSerializer implements TypeSerializer<EntityPosition> {
 
-    public static final EntityPositionSerializer INSTANCE = new EntityPositionSerializer();
+    public static final TypeSerializer<EntityPosition> INSTANCE = new EntityPositionSerializer();
 
     private EntityPositionSerializer() {
     }

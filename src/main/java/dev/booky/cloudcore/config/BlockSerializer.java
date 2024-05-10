@@ -15,7 +15,7 @@ import java.util.Objects;
 
 public final class BlockSerializer implements TypeSerializer<Block> {
 
-    public static final BlockSerializer INSTANCE = new BlockSerializer();
+    public static final TypeSerializer<Block> INSTANCE = new BlockSerializer();
 
     private BlockSerializer() {
     }

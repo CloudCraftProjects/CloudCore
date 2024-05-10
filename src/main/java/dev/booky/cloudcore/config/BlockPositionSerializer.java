@@ -16,7 +16,7 @@ import static java.lang.Integer.parseInt;
 
 public final class BlockPositionSerializer implements TypeSerializer<BlockPosition> {
 
-    public static final BlockPositionSerializer INSTANCE = new BlockPositionSerializer();
+    public static final TypeSerializer<BlockPosition> INSTANCE = new BlockPositionSerializer();
 
     private BlockPositionSerializer() {
     }

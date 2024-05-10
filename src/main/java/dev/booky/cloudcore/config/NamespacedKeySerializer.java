@@ -3,13 +3,14 @@ package dev.booky.cloudcore.config;
 
 import org.bukkit.NamespacedKey;
 import org.spongepowered.configurate.serialize.ScalarSerializer;
+import org.spongepowered.configurate.serialize.TypeSerializer;
 
 import java.lang.reflect.Type;
 import java.util.function.Predicate;
 
 public final class NamespacedKeySerializer extends ScalarSerializer<NamespacedKey> {
 
-    public static final NamespacedKeySerializer INSTANCE = new NamespacedKeySerializer();
+    public static final TypeSerializer<NamespacedKey> INSTANCE = new NamespacedKeySerializer();
 
     private NamespacedKeySerializer() {
         super(NamespacedKey.class);

@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class BlockBBoxSerializer implements TypeSerializer<BlockBBox> {
 
-    public static final BlockBBoxSerializer INSTANCE = new BlockBBoxSerializer();
+    public static final TypeSerializer<BlockBBox> INSTANCE = new BlockBBoxSerializer();
 
     private BlockBBoxSerializer() {
     }

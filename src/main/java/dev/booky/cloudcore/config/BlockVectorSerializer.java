@@ -12,7 +12,7 @@ import java.lang.reflect.Type;
 
 public final class BlockVectorSerializer implements TypeSerializer<BlockVector> {
 
-    public static final BlockVectorSerializer INSTANCE = new BlockVectorSerializer();
+    public static final TypeSerializer<BlockVector> INSTANCE = new BlockVectorSerializer();
 
     private BlockVectorSerializer() {
     }

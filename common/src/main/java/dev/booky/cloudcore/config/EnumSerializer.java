@@ -5,13 +5,14 @@ import io.leangen.geantyref.GenericTypeReflector;
 import io.leangen.geantyref.TypeToken;
 import org.spongepowered.configurate.serialize.ScalarSerializer;
 import org.spongepowered.configurate.serialize.SerializationException;
+import org.spongepowered.configurate.serialize.TypeSerializer;
 
 import java.lang.reflect.Type;
 import java.util.function.Predicate;
 
 public final class EnumSerializer extends ScalarSerializer<Enum<?>> {
 
-    public static final EnumSerializer INSTANCE = new EnumSerializer();
+    public static final TypeSerializer<Enum<?>> INSTANCE = new EnumSerializer();
 
     private EnumSerializer() {
         super(new TypeToken<Enum<?>>() {});

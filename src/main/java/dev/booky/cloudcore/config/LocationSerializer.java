@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public final class LocationSerializer implements TypeSerializer<Location> {
 
-    public static final LocationSerializer INSTANCE = new LocationSerializer();
+    public static final TypeSerializer<Location> INSTANCE = new LocationSerializer();
 
     private LocationSerializer() {
     }
