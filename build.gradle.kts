@@ -6,13 +6,44 @@ plugins {
     alias(libs.plugins.pluginyml.bukkit)
     alias(libs.plugins.run.paper)
     alias(libs.plugins.shadow)
+    alias(libs.plugins.indra) apply false
 }
 
-group = "dev.booky"
-version = "1.0.3-SNAPSHOT"
+allprojects {
+    apply<JavaLibraryPlugin>()
+    apply<MavenPublishPlugin>()
+    apply<IdeaPlugin>()
 
-repositories {
-    maven("https://repo.cloudcraftmc.de/public/")
+    group = "dev.booky"
+    version = "1.0.3-SNAPSHOT"
+
+    repositories {
+        maven("https://repo.cloudcraftmc.de/public/")
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+            vendor = JvmVendorSpec.ADOPTIUM
+        }
+    }
+
+    publishing {
+        publications.create<MavenPublication>("maven") {
+            artifactId = setOf(rootProject, project).joinToString("-") { it.name }.lowercase()
+            from(components["java"])
+        }
+        repositories.maven("https://repo.cloudcraftmc.de/releases") {
+            name = "horreo"
+            credentials(PasswordCredentials::class.java)
+        }
+    }
+}
+
+subprojects {
+    tasks.withType<Jar> {
+        destinationDirectory = rootProject.tasks.jar.map { it.destinationDirectory }.get()
+    }
 }
 
 dependencies {
@@ -27,25 +58,6 @@ dependencies {
 
     // metrics
     implementation(libs.bstats.bukkit)
-}
-
-java {
-    withSourcesJar()
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-        vendor = JvmVendorSpec.ADOPTIUM
-    }
-}
-
-publishing {
-    publications.create<MavenPublication>("maven") {
-        artifactId = project.name.lowercase()
-        from(components["java"])
-    }
-    repositories.maven("https://repo.cloudcraftmc.de/releases") {
-        name = "horreo"
-        credentials(PasswordCredentials::class.java)
-    }
 }
 
 bukkit {
