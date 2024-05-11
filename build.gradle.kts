@@ -75,7 +75,7 @@ dependencies {
 }
 
 bukkit {
-    main = "$group.cloudcore.CloudCoreMain"
+    main = "$group.cloudcore.CloudCoreBukkitMain"
     apiVersion = "1.20.5"
     authors = listOf("booky10")
     website = "https://github.com/CloudCraftProjects/CloudCore"
@@ -84,7 +84,7 @@ bukkit {
 
 tasks {
     runServer {
-        minecraftVersion("1.20.6")
+        minecraftVersion(libs.versions.paper.map { it.split("-")[0] }.get())
 
         downloadPlugins {
             hangar("CommandAPI", libs.versions.commandapi.get())
