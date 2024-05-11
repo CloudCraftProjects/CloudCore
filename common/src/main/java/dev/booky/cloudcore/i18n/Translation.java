@@ -89,16 +89,11 @@ final class Translation {
 
             @Override
             public Component replaceArgs(Entry entry, List<TranslationArgument> args) {
-                // use tag resolvers for minimessage
-                // this means {0}, {1}, etc. will not work here,
+                // use a custom tag resolver for minimessage
+                // this means {0}, {1}, etc. will not work here for arguments,
                 // instead use <0>, <1>, etc.
-                TagResolver.Builder resolvers = TagResolver.builder();
-                for (int i = 0; i < args.size(); i++) {
-                    @Subst("42") String argName = Integer.toString(i);
-                    Tag argTag = Tag.selfClosingInserting(args.get(i));
-                    resolvers.resolver(TagResolver.resolver(argName, argTag));
-                }
-                return miniMessage().deserialize(entry.string(), resolvers.build());
+                return miniMessage().deserialize(entry.string(),
+                        new AdvancedTagFormatter(args));
             }
         },
         LEGACY {
