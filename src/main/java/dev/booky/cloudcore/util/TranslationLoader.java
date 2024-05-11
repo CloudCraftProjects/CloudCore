@@ -25,7 +25,10 @@ public final class TranslationLoader implements Translator {
 
     public TranslationLoader(Plugin plugin, Locale... locales) {
         NamespacedKey name = new NamespacedKey(plugin, "i18n");
-        this.delegate = new CloudTranslator(name, locales);
+        this.delegate = new CloudTranslator(
+                plugin.getClass().getClassLoader(),
+                name, locales
+        );
     }
 
     public void unload() {

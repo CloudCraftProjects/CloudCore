@@ -25,6 +25,7 @@ import java.util.stream.Stream;
 
 public final class CloudTranslator implements Translator {
 
+    private final ClassLoader classLoader;
     private final Key translatorName;
     private final String baseName;
 
@@ -34,15 +35,24 @@ public final class CloudTranslator implements Translator {
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
     private Map<String, Translation> translations;
 
-    public CloudTranslator(Keyed translatorName, Locale... locales) {
-        this(translatorName, List.of(locales));
+    public CloudTranslator(
+            ClassLoader classLoader,
+            Keyed translatorName,
+            Locale... locales
+    ) {
+        this(classLoader, translatorName, List.of(locales));
     }
 
-    public CloudTranslator(Keyed translatorName, Collection<Locale> locales) {
+    public CloudTranslator(
+            ClassLoader classLoader,
+            Keyed translatorName,
+            Collection<Locale> locales
+    ) {
         if (locales.isEmpty()) {
             throw new IllegalArgumentException("At least one locale has to be provided");
         }
 
+        this.classLoader = classLoader;
         this.translatorName = translatorName.key();
         this.baseName = this.translatorName.namespace();
 
@@ -108,7 +118,7 @@ public final class CloudTranslator implements Translator {
     }
 
     private Map<String, String> processBundle(Locale locale) {
-        return this.processBundle(locale, this.getClass().getClassLoader());
+        return this.processBundle(locale, this.classLoader);
     }
 
     private Map<String, String> processBundle(Locale locale, ClassLoader classLoader) {
