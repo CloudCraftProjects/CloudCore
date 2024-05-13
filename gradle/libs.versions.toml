@@ -13,7 +13,6 @@ configurate = "4.1.2"
 # paper
 paper = "1.20.6-R0.1-SNAPSHOT"
 bstats = "3.0.2"
-commandapi = "9.4.1"
 brigadier = "1.2.9"
 debuggery = "1.5.1"
 
@@ -40,7 +39,6 @@ configurate-yaml = { module = "org.spongepowered:configurate-yaml", version.ref 
 # paper
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
 bstats-bukkit = { module = "org.bstats:bstats-bukkit", version.ref = "bstats" }
-commandapi-core = { module = "dev.jorel:commandapi-bukkit-core", version.ref = "commandapi" }
 brigadier = { module = "com.mojang:brigadier", version.ref = "brigadier" }
 
 # velocity

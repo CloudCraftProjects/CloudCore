@@ -66,10 +66,6 @@ dependencies {
     api(projects.cloudCoreCommon)
     compileOnly(libs.paper.api)
 
-    // command library
-    compileOnlyApi(libs.commandapi.core)
-    compileOnlyApi(libs.brigadier) // required for cmd api to compile
-
     // metrics
     implementation(libs.bstats.bukkit)
 }
@@ -79,7 +75,6 @@ bukkit {
     apiVersion = "1.20.5"
     authors = listOf("booky10")
     website = "https://github.com/CloudCraftProjects/CloudCore"
-    depend = listOf("CommandAPI")
 }
 
 tasks {
@@ -87,7 +82,6 @@ tasks {
         minecraftVersion(libs.versions.paper.map { it.split("-")[0] }.get())
 
         downloadPlugins {
-            hangar("CommandAPI", libs.versions.commandapi.get())
             github(
                 "PaperMC", "Debuggery",
                 "v${libs.versions.debuggery.get()}",
