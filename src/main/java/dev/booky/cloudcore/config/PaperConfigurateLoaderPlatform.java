@@ -11,8 +11,10 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.ApiStatus;
 import org.spongepowered.configurate.serialize.TypeSerializerCollection;
 
+@ApiStatus.Internal
 public class PaperConfigurateLoaderPlatform implements IConfigurateLoaderPlatform {
 
     @Override

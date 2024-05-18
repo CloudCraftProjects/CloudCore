@@ -12,7 +12,7 @@ import org.spongepowered.configurate.serialize.TypeSerializer;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
-public class BlockBBoxSerializer implements TypeSerializer<BlockBBox> {
+public final class BlockBBoxSerializer implements TypeSerializer<BlockBBox> {
 
     public static final TypeSerializer<BlockBBox> INSTANCE = new BlockBBoxSerializer();
 
