@@ -15,7 +15,7 @@ Bukkit specific:
 
 ## Download
 
-https://dl.cloudcraftmc.de/r/cloudcore
+https://dl.cloudcraftmc.de/CloudCore
 
 ## Usage
 
