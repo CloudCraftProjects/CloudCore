@@ -12,7 +12,7 @@ import java.lang.reflect.Type;
 
 public final class FinePositionSerializer implements TypeSerializer<FinePosition> {
 
-    public static final FinePositionSerializer INSTANCE = new FinePositionSerializer();
+    public static final TypeSerializer<FinePosition> INSTANCE = new FinePositionSerializer();
 
     private FinePositionSerializer() {
     }

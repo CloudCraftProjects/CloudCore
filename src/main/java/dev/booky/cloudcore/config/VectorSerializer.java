@@ -11,7 +11,7 @@ import java.lang.reflect.Type;
 
 public final class VectorSerializer implements TypeSerializer<Vector> {
 
-    public static final VectorSerializer INSTANCE = new VectorSerializer();
+    public static final TypeSerializer<Vector> INSTANCE = new VectorSerializer();
 
     private VectorSerializer() {
     }

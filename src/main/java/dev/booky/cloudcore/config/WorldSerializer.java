@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public final class WorldSerializer implements TypeSerializer<World> {
 
-    public static final WorldSerializer INSTANCE = new WorldSerializer();
+    public static final TypeSerializer<World> INSTANCE = new WorldSerializer();
 
     private WorldSerializer() {
     }
