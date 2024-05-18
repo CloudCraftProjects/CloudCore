@@ -11,10 +11,11 @@ Bukkit specific:
 
 - Block bounding box (with a defined world)
 - EntityPosition, extends Paper's new (experimental) Position API with yaw and pitch
+- Useful custom arguments when working with Paper's brigadier api
 
 ## Download
 
-https://nightly.link/CloudCraftProjects/CloudCore/workflows/build/master/CloudCore-Artifacts.zip
+https://dl.cloudcraftmc.de/r/cloudcore
 
 ## Usage
 
