@@ -192,7 +192,8 @@ public class ConfigurateLoader<
                 = PLATFORM.buildDefaultSerializers(TypeSerializerCollection.builder()).build();
 
         private final Supplier<B> builder;
-        private Function<B, B> configurator = Function.identity();
+        private Function<B, B> configurator = builder -> builder.defaultOptions(
+                opts -> opts.implicitInitialization(false));
 
         private Builder(Supplier<B> builder) {
             this.builder = builder;
