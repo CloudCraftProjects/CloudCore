@@ -22,16 +22,16 @@ public class PaperConfigurateLoaderPlatform implements IConfigurateLoaderPlatfor
             TypeSerializerCollection.Builder builder
     ) {
         return IConfigurateLoaderPlatform.super.buildDefaultSerializers(builder
+                .register(NamespacedKey.class, NamespacedKeySerializer.INSTANCE)
                 .register(BlockBBox.class, BlockBBoxSerializer.INSTANCE)
                 .register(BlockPosition.class, BlockPositionSerializer.INSTANCE)
-                .register(Block.class, BlockSerializer.INSTANCE)
-                .register(BlockVector.class, BlockVectorSerializer.INSTANCE)
+                .register(Location.class, LocationSerializer.INSTANCE)
                 .register(EntityPosition.class, EntityPositionSerializer.INSTANCE)
                 .register(FinePosition.class, FinePositionSerializer.INSTANCE)
-                .register(Location.class, LocationSerializer.INSTANCE)
-                .register(NamespacedKey.class, NamespacedKeySerializer.INSTANCE)
+                .register(BlockVector.class, BlockVectorSerializer.INSTANCE)
                 .register(Vector.class, VectorSerializer.INSTANCE)
                 .register(World.class, WorldSerializer.INSTANCE)
+                .register(Block.class, BlockSerializer.INSTANCE)
         );
     }
 }
