@@ -72,7 +72,7 @@ dependencies {
 
 bukkit {
     main = "$group.cloudcore.CloudCoreBukkitMain"
-    apiVersion = "1.20.5"
+    apiVersion = "1.20"
     authors = listOf("booky10")
     website = "https://github.com/CloudCraftProjects/CloudCore"
 }
