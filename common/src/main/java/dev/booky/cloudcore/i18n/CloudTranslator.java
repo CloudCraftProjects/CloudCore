@@ -36,17 +36,17 @@ public final class CloudTranslator implements Translator {
     private Map<String, Translation> translations;
 
     public CloudTranslator(
-            ClassLoader classLoader,
-            Keyed translatorName,
-            Locale... locales
+        ClassLoader classLoader,
+        Keyed translatorName,
+        Locale... locales
     ) {
         this(classLoader, translatorName, List.of(locales));
     }
 
     public CloudTranslator(
-            ClassLoader classLoader,
-            Keyed translatorName,
-            Collection<Locale> locales
+        ClassLoader classLoader,
+        Keyed translatorName,
+        Collection<Locale> locales
     ) {
         if (locales.isEmpty()) {
             throw new IllegalArgumentException("At least one locale has to be provided");
@@ -97,21 +97,21 @@ public final class CloudTranslator implements Translator {
         }
 
         this.translations = rawTranslations.entrySet().stream()
-                // flatten raw translations
-                .flatMap(rawEntry -> rawEntry.getValue().entrySet().stream()
-                        .map(entry -> Map.entry(entry.getKey(),
-                                Map.entry(rawEntry.getKey(), entry.getValue()))))
-                // group by translation key
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        entry -> Stream.of(entry.getValue()),
-                        Stream::concat
-                ))
-                .entrySet().stream()
-                // create translation objects and collect them
+            // flatten raw translations
+            .flatMap(rawEntry -> rawEntry.getValue().entrySet().stream()
                 .map(entry -> Map.entry(entry.getKey(),
-                        new Translation(this, entry.getValue())))
-                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
+                    Map.entry(rawEntry.getKey(), entry.getValue()))))
+            // group by translation key
+            .collect(Collectors.toMap(
+                Map.Entry::getKey,
+                entry -> Stream.of(entry.getValue()),
+                Stream::concat
+            ))
+            .entrySet().stream()
+            // create translation objects and collect them
+            .map(entry -> Map.entry(entry.getKey(),
+                new Translation(this, entry.getValue())))
+            .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
 
         // add as global translator source after loading
         GlobalTranslator.translator().addSource(this);
