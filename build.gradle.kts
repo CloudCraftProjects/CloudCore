@@ -1,3 +1,6 @@
+import com.github.jengelman.gradle.plugins.shadow.ShadowPlugin
+import me.modmuss50.mpp.MppPlugin
+import me.modmuss50.mpp.PublishModTask
 import net.kyori.indra.IndraPlugin
 import org.jetbrains.gradle.ext.IdeaExtPlugin
 
@@ -13,6 +16,8 @@ plugins {
 
     alias(libs.plugins.indra)
     alias(libs.plugins.blossom) apply false
+
+    alias(libs.plugins.publishing)
 }
 
 allprojects {
@@ -22,7 +27,6 @@ allprojects {
     apply<IndraPlugin>()
 
     group = "dev.booky"
-    version = "1.1.0-SNAPSHOT"
 
     repositories {
         maven("https://repo.cloudcraftmc.de/public/")
@@ -54,11 +58,61 @@ allprojects {
     tasks.withType<Jar> {
         archiveBaseName = project.name
     }
-}
 
-subprojects {
-    tasks.withType<Jar> {
-        destinationDirectory = rootProject.tasks.jar.map { it.destinationDirectory }.get()
+    if (project != rootProject) {
+        tasks.withType<Jar> {
+            destinationDirectory = rootProject.tasks.jar.map { it.destinationDirectory }.get()
+        }
+    }
+
+    if (project.projectDir.name != "common") {
+        apply<ShadowPlugin>()
+        apply<MppPlugin>()
+
+        publishMods {
+            val repositoryName = "CloudCraftProjects/CloudCore"
+            file = tasks.shadowJar.flatMap { it.archiveFile }.get()
+            changelog = "See https://github.com/$repositoryName/releases/tag/v${project.version}"
+            type = if (project.version.toString().endsWith("-SNAPSHOT")) BETA else STABLE
+            additionalFiles.from(tasks.sourcesJar.flatMap { it.archiveFile }.get())
+            dryRun = !hasProperty("noDryPublish")
+
+            github {
+                accessToken = providers.environmentVariable("GITHUB_API_TOKEN")
+                    .orElse(providers.gradleProperty("ccGithubToken"))
+
+                displayName = "${rootProject.name} v${project.version}"
+
+                repository = repositoryName
+                commitish = "master"
+                tagName = "v${project.version}"
+
+                if (project != rootProject) {
+                    parent(rootProject.tasks.named("publishGithub"))
+                }
+            }
+            modrinth {
+                accessToken = providers.environmentVariable("MODRINTH_API_TOKEN")
+                    .orElse(providers.gradleProperty("ccModrinthToken"))
+
+                val platformName = if (project == rootProject) "paper" else project.projectDir.name
+                val fancyPlatformName = platformName.replaceFirstChar { it.titlecaseChar() }
+                version = "${project.version}+$platformName"
+                displayName = "${rootProject.name} $fancyPlatformName v${project.version}"
+                modLoaders.add(platformName)
+
+                projectId = "I9yBw5Kw"
+                minecraftVersionRange {
+                    start = rootProject.libs.versions.paper.get().split("-")[0]
+                    end = "latest"
+                }
+            }
+        }
+
+        tasks.withType<PublishModTask> {
+            dependsOn(tasks.shadowJar)
+            dependsOn(tasks.sourcesJar)
+        }
     }
 }
 
