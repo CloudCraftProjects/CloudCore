@@ -7,6 +7,7 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import io.papermc.paper.command.brigadier.argument.CustomArgumentType;
+import org.jspecify.annotations.NullMarked;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -21,6 +22,7 @@ import static net.kyori.adventure.text.Component.text;
 import static net.kyori.adventure.text.Component.translatable;
 
 // adopted from https://github.com/LuckPerms/LuckPerms/blob/5c1ea5633ed5986c02d3fa1ccf187638d143c091/common/src/main/java/me/lucko/luckperms/common/util/DurationParser.java (MIT License)
+@NullMarked
 public final class DurationArgumentType implements CustomArgumentType.Converted<Duration, String> {
 
     private static final Map<ChronoUnit, String> UNITS_PATTERNS = ImmutableMap.<ChronoUnit, String>builder()

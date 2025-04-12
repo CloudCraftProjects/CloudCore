@@ -4,7 +4,8 @@ package dev.booky.cloudcore.config;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
@@ -12,6 +13,7 @@ import org.spongepowered.configurate.serialize.TypeSerializer;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
+@NullMarked
 public final class WorldSerializer implements TypeSerializer<World> {
 
     public static final TypeSerializer<World> INSTANCE = new WorldSerializer();
@@ -20,7 +22,7 @@ public final class WorldSerializer implements TypeSerializer<World> {
     }
 
     @Override
-    public World deserialize(Type type, ConfigurationNode node) throws SerializationException {
+    public @Nullable World deserialize(Type type, ConfigurationNode node) throws SerializationException {
         if (node.virtual()) {
             return null;
         }

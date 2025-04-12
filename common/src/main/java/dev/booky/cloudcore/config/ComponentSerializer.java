@@ -3,6 +3,7 @@ package dev.booky.cloudcore.config;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.serialize.ScalarSerializer;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
@@ -10,6 +11,7 @@ import org.spongepowered.configurate.serialize.TypeSerializer;
 import java.lang.reflect.Type;
 import java.util.function.Predicate;
 
+@NullMarked
 public final class ComponentSerializer extends ScalarSerializer<Component> {
 
     public static final TypeSerializer<Component> INSTANCE = new ComponentSerializer();

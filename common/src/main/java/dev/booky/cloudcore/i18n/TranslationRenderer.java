@@ -5,11 +5,13 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.translation.GlobalTranslator;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+@NullMarked
 final class TranslationRenderer {
 
     private TranslationRenderer() {

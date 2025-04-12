@@ -8,6 +8,7 @@ import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import io.papermc.paper.command.brigadier.argument.CustomArgumentType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jspecify.annotations.NullMarked;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -16,6 +17,7 @@ import static com.mojang.brigadier.arguments.StringArgumentType.word;
 import static dev.booky.cloudcore.commands.CommandUtil.buildExceptionType;
 import static net.kyori.adventure.text.Component.translatable;
 
+@NullMarked
 public final class AddressArgumentType implements CustomArgumentType.Converted<InetAddress, String> {
 
     private static final SimpleCommandExceptionType ERROR_INVALID_IP =

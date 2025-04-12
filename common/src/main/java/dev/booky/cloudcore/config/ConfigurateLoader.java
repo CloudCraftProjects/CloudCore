@@ -2,7 +2,8 @@ package dev.booky.cloudcore.config;
 // Created by booky10 in CloudCore (04:36 10.05.2024.)
 
 import io.leangen.geantyref.TypeToken;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.loader.AbstractConfigurationLoader;
 import org.spongepowered.configurate.serialize.TypeSerializerCollection;
@@ -22,6 +23,7 @@ import java.util.function.Supplier;
 
 import static dev.booky.cloudcore.config.IConfigurateLoaderPlatform.PLATFORM;
 
+@NullMarked
 public class ConfigurateLoader<
         L extends AbstractConfigurationLoader<?>,
         B extends AbstractConfigurationLoader.Builder<B, L>

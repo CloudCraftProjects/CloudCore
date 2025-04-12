@@ -9,12 +9,14 @@ import net.kyori.adventure.translation.Translator;
 import net.kyori.adventure.util.TriState;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.text.MessageFormat;
 import java.util.Locale;
 
+@NullMarked
+@Deprecated(forRemoval = true)
 public final class TranslationLoader implements Translator {
 
     private final CloudTranslator delegate;
@@ -50,22 +52,22 @@ public final class TranslationLoader implements Translator {
     }
 
     @Override
-    public @NotNull Key name() {
+    public Key name() {
         return this.delegate.name();
     }
 
     @Override
-    public @NotNull TriState hasAnyTranslations() {
+    public TriState hasAnyTranslations() {
         return this.delegate.hasAnyTranslations();
     }
 
     @Override
-    public @Nullable MessageFormat translate(@NotNull String key, @NotNull Locale locale) {
+    public @Nullable MessageFormat translate(String key, Locale locale) {
         return this.delegate.translate(key, locale);
     }
 
     @Override
-    public @Nullable Component translate(@NotNull TranslatableComponent component, @NotNull Locale locale) {
+    public @Nullable Component translate(TranslatableComponent component, Locale locale) {
         return this.delegate.translate(component, locale);
     }
 }

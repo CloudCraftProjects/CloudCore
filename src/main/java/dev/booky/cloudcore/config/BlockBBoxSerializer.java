@@ -4,7 +4,8 @@ package dev.booky.cloudcore.config;
 import dev.booky.cloudcore.util.BlockBBox;
 import io.papermc.paper.math.BlockPosition;
 import org.bukkit.World;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
@@ -12,6 +13,7 @@ import org.spongepowered.configurate.serialize.TypeSerializer;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
+@NullMarked
 public final class BlockBBoxSerializer implements TypeSerializer<BlockBBox> {
 
     public static final TypeSerializer<BlockBBox> INSTANCE = new BlockBBoxSerializer();
@@ -20,7 +22,7 @@ public final class BlockBBoxSerializer implements TypeSerializer<BlockBBox> {
     }
 
     @Override
-    public BlockBBox deserialize(Type type, ConfigurationNode node) throws SerializationException {
+    public @Nullable BlockBBox deserialize(Type type, ConfigurationNode node) throws SerializationException {
         if (node.virtual()) {
             return null;
         }

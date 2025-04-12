@@ -5,7 +5,8 @@ import io.papermc.paper.math.BlockPosition;
 import io.papermc.paper.math.Position;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
@@ -13,6 +14,7 @@ import org.spongepowered.configurate.serialize.TypeSerializer;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
+@NullMarked
 public final class BlockSerializer implements TypeSerializer<Block> {
 
     public static final TypeSerializer<Block> INSTANCE = new BlockSerializer();
@@ -21,7 +23,7 @@ public final class BlockSerializer implements TypeSerializer<Block> {
     }
 
     @Override
-    public Block deserialize(Type type, ConfigurationNode node) throws SerializationException {
+    public @Nullable Block deserialize(Type type, ConfigurationNode node) throws SerializationException {
         if (node.virtual()) {
             return null;
         }

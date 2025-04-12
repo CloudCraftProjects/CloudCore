@@ -3,7 +3,9 @@ package dev.booky.cloudcore;
 
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 public class CloudCoreBukkitMain extends JavaPlugin {
 
     public CloudCoreBukkitMain() {

@@ -2,6 +2,7 @@ package dev.booky.cloudcore.config;
 // Created by booky10 in TJCUpdater (12:55 27.06.22)
 
 import io.leangen.geantyref.TypeToken;
+import org.jspecify.annotations.NullMarked;
 import org.spongepowered.configurate.serialize.TypeSerializerCollection;
 
 import java.nio.file.Path;
@@ -11,6 +12,7 @@ import java.util.function.Supplier;
 /**
  * @deprecated use {@link ConfigurateLoader} instead
  */
+@NullMarked
 @Deprecated(forRemoval = true)
 public final class ConfigLoader {
 

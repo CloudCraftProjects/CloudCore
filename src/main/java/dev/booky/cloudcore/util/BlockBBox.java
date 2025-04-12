@@ -10,14 +10,16 @@ import org.bukkit.block.Block;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.NumberConversions;
 import org.bukkit.util.Vector;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.lang.ref.WeakReference;
 import java.util.Objects;
 
+@NullMarked
 public final class BlockBBox implements Cloneable {
 
-    private final WeakReference<World> world;
+    private final WeakReference<@Nullable World> world;
     private final int minX, minY, minZ;
     private final int maxX, maxY, maxZ;
 
@@ -28,22 +30,22 @@ public final class BlockBBox implements Cloneable {
         }
     }
 
-    public BlockBBox(World world, Position corner1, Position corner2) {
+    public BlockBBox(@Nullable World world, Position corner1, Position corner2) {
         this(world,
                 corner1.x(), corner1.y(), corner1.z(),
                 corner2.x(), corner2.y(), corner2.z());
     }
 
-    public BlockBBox(World world, Vector corner1, Vector corner2) {
+    public BlockBBox(@Nullable World world, Vector corner1, Vector corner2) {
         this(world, corner1.getX(), corner1.getY(), corner1.getZ(), corner2.getX(), corner2.getY(), corner2.getZ());
     }
 
-    public BlockBBox(World world, double x1, double y1, double z1, double x2, double y2, double z2) {
+    public BlockBBox(@Nullable World world, double x1, double y1, double z1, double x2, double y2, double z2) {
         this(world, NumberConversions.floor(x1), NumberConversions.floor(y1), NumberConversions.floor(z1),
                 NumberConversions.ceil(x2), NumberConversions.ceil(y2), NumberConversions.ceil(z2));
     }
 
-    public BlockBBox(World world, int x1, int y1, int z1, int x2, int y2, int z2) {
+    public BlockBBox(@Nullable World world, int x1, int y1, int z1, int x2, int y2, int z2) {
         this.world = new WeakReference<>(world);
         this.minX = Math.min(x1, x2);
         this.minY = Math.min(y1, y2);

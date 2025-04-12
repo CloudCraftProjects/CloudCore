@@ -5,9 +5,11 @@ import com.mojang.brigadier.Message;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
 import net.kyori.adventure.text.Component;
+import org.jspecify.annotations.NullMarked;
 
 import static io.papermc.paper.command.brigadier.MessageComponentSerializer.message;
 
+@NullMarked
 public final class CommandUtil {
 
     private CommandUtil() {

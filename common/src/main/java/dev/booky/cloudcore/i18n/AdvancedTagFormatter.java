@@ -10,7 +10,8 @@ import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import net.kyori.adventure.util.Index;
 import net.kyori.adventure.util.TriState;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -20,6 +21,7 @@ import java.util.Locale;
 
 import static net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer.plainText;
 
+@NullMarked
 final class AdvancedTagFormatter implements TagResolver {
 
     private final List<TranslationArgument> args;
@@ -54,7 +56,7 @@ final class AdvancedTagFormatter implements TagResolver {
         }
         String dynamicFormattingName = args.pop().value();
         DynamicFormatting dynamicFormatting = DynamicFormatting.INDEX.valueOr(
-            dynamicFormattingName, DynamicFormatting.NONE);
+                dynamicFormattingName, DynamicFormatting.NONE);
         return dynamicFormatting.format(args, ctx, arg);
     }
 
@@ -100,7 +102,7 @@ final class AdvancedTagFormatter implements TagResolver {
                 String value;
                 do {
                     value = args.popOr(
-                        () -> "No argument found for " + state).value();
+                            () -> "No argument found for " + state).value();
                 } while (argOffset-- > 0);
                 return Tag.inserting(ctx.deserialize(value));
             }
@@ -121,8 +123,8 @@ final class AdvancedTagFormatter implements TagResolver {
                 }
 
                 return localeStr.indexOf('.') < 0
-                    ? DecimalFormat.getInstance(Locale.forLanguageTag(localeStr))
-                    : new DecimalFormat(localeStr, DecimalFormatSymbols.getInstance());
+                        ? DecimalFormat.getInstance(Locale.forLanguageTag(localeStr))
+                        : new DecimalFormat(localeStr, DecimalFormatSymbols.getInstance());
             }
 
             @Override
@@ -140,7 +142,7 @@ final class AdvancedTagFormatter implements TagResolver {
         };
 
         private static final Index<String, DynamicFormatting> INDEX =
-            Index.create(DynamicFormatting::getId, values());
+                Index.create(DynamicFormatting::getId, values());
 
         private final String id;
 
@@ -153,8 +155,8 @@ final class AdvancedTagFormatter implements TagResolver {
                 return (Number) arg.value();
             }
             String string = arg.value() instanceof Component
-                ? plainText().serialize((Component) arg.value())
-                : String.valueOf(arg.value());
+                    ? plainText().serialize((Component) arg.value())
+                    : String.valueOf(arg.value());
             return Double.parseDouble(string);
         }
 

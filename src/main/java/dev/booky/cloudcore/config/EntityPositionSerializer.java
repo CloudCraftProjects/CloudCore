@@ -2,13 +2,15 @@ package dev.booky.cloudcore.config;
 // Created by booky10 in CloudCore (03:54 15.07.23)
 
 import dev.booky.cloudcore.util.EntityPosition;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
 
 import java.lang.reflect.Type;
 
+@NullMarked
 public final class EntityPositionSerializer implements TypeSerializer<EntityPosition> {
 
     public static final TypeSerializer<EntityPosition> INSTANCE = new EntityPositionSerializer();
@@ -17,7 +19,7 @@ public final class EntityPositionSerializer implements TypeSerializer<EntityPosi
     }
 
     @Override
-    public EntityPosition deserialize(Type type, ConfigurationNode node) throws SerializationException {
+    public @Nullable EntityPosition deserialize(Type type, ConfigurationNode node) throws SerializationException {
         if (node.virtual()) {
             return null;
         }

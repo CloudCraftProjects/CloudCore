@@ -3,13 +3,15 @@ package dev.booky.cloudcore.config;
 
 import io.papermc.paper.math.FinePosition;
 import io.papermc.paper.math.Position;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
 
 import java.lang.reflect.Type;
 
+@NullMarked
 public final class FinePositionSerializer implements TypeSerializer<FinePosition> {
 
     public static final TypeSerializer<FinePosition> INSTANCE = new FinePositionSerializer();
@@ -18,7 +20,7 @@ public final class FinePositionSerializer implements TypeSerializer<FinePosition
     }
 
     @Override
-    public FinePosition deserialize(Type type, ConfigurationNode node) throws SerializationException {
+    public @Nullable FinePosition deserialize(Type type, ConfigurationNode node) throws SerializationException {
         if (node.virtual()) {
             return null;
         }

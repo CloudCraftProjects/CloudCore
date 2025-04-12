@@ -8,8 +8,8 @@ import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.translation.GlobalTranslator;
 import net.kyori.adventure.translation.Translator;
 import net.kyori.adventure.util.TriState;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 
 import java.text.MessageFormat;
 import java.util.Collection;
@@ -23,6 +23,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@NullMarked
 public final class CloudTranslator implements Translator {
 
     private final ClassLoader classLoader;
@@ -33,20 +34,20 @@ public final class CloudTranslator implements Translator {
     final Locale defaultLocale;
 
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
-    private Map<String, Translation> translations;
+    private @Nullable Map<String, Translation> translations;
 
     public CloudTranslator(
-        ClassLoader classLoader,
-        Keyed translatorName,
-        Locale... locales
+            ClassLoader classLoader,
+            Keyed translatorName,
+            Locale... locales
     ) {
         this(classLoader, translatorName, List.of(locales));
     }
 
     public CloudTranslator(
-        ClassLoader classLoader,
-        Keyed translatorName,
-        Collection<Locale> locales
+            ClassLoader classLoader,
+            Keyed translatorName,
+            Collection<Locale> locales
     ) {
         if (locales.isEmpty()) {
             throw new IllegalArgumentException("At least one locale has to be provided");
@@ -97,21 +98,21 @@ public final class CloudTranslator implements Translator {
         }
 
         this.translations = rawTranslations.entrySet().stream()
-            // flatten raw translations
-            .flatMap(rawEntry -> rawEntry.getValue().entrySet().stream()
+                // flatten raw translations
+                .flatMap(rawEntry -> rawEntry.getValue().entrySet().stream()
+                        .map(entry -> Map.entry(entry.getKey(),
+                                Map.entry(rawEntry.getKey(), entry.getValue()))))
+                // group by translation key
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> Stream.of(entry.getValue()),
+                        Stream::concat
+                ))
+                .entrySet().stream()
+                // create translation objects and collect them
                 .map(entry -> Map.entry(entry.getKey(),
-                    Map.entry(rawEntry.getKey(), entry.getValue()))))
-            // group by translation key
-            .collect(Collectors.toMap(
-                Map.Entry::getKey,
-                entry -> Stream.of(entry.getValue()),
-                Stream::concat
-            ))
-            .entrySet().stream()
-            // create translation objects and collect them
-            .map(entry -> Map.entry(entry.getKey(),
-                new Translation(this, entry.getValue())))
-            .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
+                        new Translation(this, entry.getValue())))
+                .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
 
         // add as global translator source after loading
         GlobalTranslator.translator().addSource(this);
@@ -131,31 +132,34 @@ public final class CloudTranslator implements Translator {
     }
 
     @Override
-    public @NotNull Key name() {
+    public Key name() {
         return this.translatorName;
     }
 
     @Override
-    public @NotNull TriState hasAnyTranslations() {
+    public TriState hasAnyTranslations() {
         this.lock.readLock().lock();
         try {
-            return TriState.byBoolean(!this.translations.isEmpty());
+            if (this.translations != null) {
+                return TriState.byBoolean(!this.translations.isEmpty());
+            }
+            return TriState.FALSE;
         } finally {
             this.lock.readLock().unlock();
         }
     }
 
     @Override
-    public @Nullable MessageFormat translate(@NotNull String key, @NotNull Locale locale) {
+    public @Nullable MessageFormat translate(String key, Locale locale) {
         return null; // this translator only supports component translations
     }
 
     @Override
-    public @Nullable Component translate(@NotNull TranslatableComponent component, @NotNull Locale locale) {
+    public @Nullable Component translate(TranslatableComponent component, Locale locale) {
         Translation translation;
         this.lock.readLock().lock();
         try {
-            translation = this.translations.get(component.key());
+            translation = this.translations != null ? this.translations.get(component.key()) : null;
         } finally {
             this.lock.readLock().unlock();
         }

@@ -8,7 +8,9 @@ import dev.booky.cloudcore.util.BuildConstants;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.bstats.velocity.Metrics;
+import org.jspecify.annotations.NullMarked;
 
+@NullMarked
 @Plugin(
         id = "cloudcore",
         name = "CloudCore",

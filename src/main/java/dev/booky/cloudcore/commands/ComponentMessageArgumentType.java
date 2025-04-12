@@ -5,10 +5,12 @@ import com.mojang.brigadier.arguments.ArgumentType;
 import io.papermc.paper.command.brigadier.argument.CustomArgumentType;
 import io.papermc.paper.command.brigadier.argument.SignedMessageResolver;
 import net.kyori.adventure.text.Component;
+import org.jspecify.annotations.NullMarked;
 
 import static io.papermc.paper.command.brigadier.argument.ArgumentTypes.signedMessage;
 import static net.kyori.adventure.text.Component.text;
 
+@NullMarked
 public final class ComponentMessageArgumentType implements CustomArgumentType.Converted<Component, SignedMessageResolver> {
 
     public static final ComponentMessageArgumentType INSTANCE = new ComponentMessageArgumentType();

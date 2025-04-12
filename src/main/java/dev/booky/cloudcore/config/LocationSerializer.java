@@ -3,7 +3,8 @@ package dev.booky.cloudcore.config;
 
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
@@ -11,6 +12,7 @@ import org.spongepowered.configurate.serialize.TypeSerializer;
 import java.lang.reflect.Type;
 import java.util.Objects;
 
+@NullMarked
 public final class LocationSerializer implements TypeSerializer<Location> {
 
     public static final TypeSerializer<Location> INSTANCE = new LocationSerializer();
@@ -19,7 +21,7 @@ public final class LocationSerializer implements TypeSerializer<Location> {
     }
 
     @Override
-    public Location deserialize(Type type, ConfigurationNode node) throws SerializationException {
+    public @Nullable Location deserialize(Type type, ConfigurationNode node) throws SerializationException {
         if (node.virtual()) {
             return null;
         }

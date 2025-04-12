@@ -2,14 +2,15 @@ package dev.booky.cloudcore.config;
 // Created by booky10 in CloudCore (18:38 17.04.23)
 
 import org.bukkit.util.BlockVector;
-import org.bukkit.util.Vector;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.serialize.TypeSerializer;
 
 import java.lang.reflect.Type;
 
+@NullMarked
 public final class BlockVectorSerializer implements TypeSerializer<BlockVector> {
 
     public static final TypeSerializer<BlockVector> INSTANCE = new BlockVectorSerializer();
@@ -18,7 +19,7 @@ public final class BlockVectorSerializer implements TypeSerializer<BlockVector> 
     }
 
     @Override
-    public BlockVector deserialize(Type type, ConfigurationNode node) {
+    public @Nullable BlockVector deserialize(Type type, ConfigurationNode node) {
         if (node.virtual()) {
             return null;
         }
