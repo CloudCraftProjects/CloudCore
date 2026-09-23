@@ -1,6 +1,6 @@
 # CloudCore
 
-Minecraft paper/velocity library plugin which most new plugins of CloudCraft depend on.
+Minecraft paper/velocity library plugin for most plugins of CloudCraft.
 
 ## Content
 

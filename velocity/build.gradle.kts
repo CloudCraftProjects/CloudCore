@@ -1,27 +1,15 @@
 plugins {
     alias(libs.plugins.run.velocity)
     alias(libs.plugins.shadow)
-    alias(libs.plugins.blossom)
 }
 
 dependencies {
     api(projects.cloudCoreCommon)
 
     compileOnly(libs.velocity.api)
-    annotationProcessor(libs.velocity.api)
 
     // metrics
     implementation(libs.bstats.velocity)
-}
-
-sourceSets {
-    main {
-        blossom {
-            javaSources {
-                property("version", project.version.toString())
-            }
-        }
-    }
 }
 
 tasks {
@@ -35,5 +23,18 @@ tasks {
 
     assemble {
         dependsOn(shadowJar)
+    }
+
+    processResources {
+        inputs.property("version", project.version)
+        filesMatching("velocity-plugin.json") {
+            expand("version" to project.version)
+        }
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }

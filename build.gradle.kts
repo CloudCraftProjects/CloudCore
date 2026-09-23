@@ -1,21 +1,15 @@
 import com.github.jengelman.gradle.plugins.shadow.ShadowPlugin
 import me.modmuss50.mpp.MppPlugin
 import me.modmuss50.mpp.PublishModTask
-import net.kyori.indra.IndraPlugin
-import org.jetbrains.gradle.ext.IdeaExtPlugin
 
 plugins {
     id("java-library")
     id("maven-publish")
-    alias(libs.plugins.ideaext)
 
     alias(libs.plugins.pluginyml.bukkit)
     alias(libs.plugins.run.paper)
     alias(libs.plugins.run.velocity) apply false
     alias(libs.plugins.shadow)
-
-    alias(libs.plugins.indra)
-    alias(libs.plugins.blossom) apply false
 
     alias(libs.plugins.publishing)
 }
@@ -23,8 +17,6 @@ plugins {
 allprojects {
     apply<JavaLibraryPlugin>()
     apply<MavenPublishPlugin>()
-    apply<IdeaExtPlugin>()
-    apply<IndraPlugin>()
 
     group = "dev.booky"
 
@@ -32,14 +24,10 @@ allprojects {
         maven("https://repo.cloudcraftmc.de/public/")
     }
 
-    indra {
-        javaVersions {
-            target(21)
-        }
-    }
-
     java {
+        withSourcesJar()
         toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
             vendor = JvmVendorSpec.ADOPTIUM
         }
     }
@@ -74,7 +62,7 @@ allprojects {
             file = tasks.shadowJar.flatMap { it.archiveFile }.get()
             changelog = "See https://github.com/$repositoryName/releases/tag/v${project.version}"
             type = if (project.version.toString().endsWith("-SNAPSHOT")) BETA else STABLE
-            additionalFiles.from(tasks.sourcesJar.flatMap { it.archiveFile }.get())
+            additionalFiles.from(tasks.named<Jar>("sourcesJar").flatMap { it.archiveFile }.get())
             dryRun = !hasProperty("noDryPublish")
 
             github {
@@ -111,7 +99,7 @@ allprojects {
 
         tasks.withType<PublishModTask> {
             dependsOn(tasks.shadowJar)
-            dependsOn(tasks.sourcesJar)
+            dependsOn(tasks.named("sourcesJar"))
         }
     }
 }

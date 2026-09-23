@@ -1,0 +1,10 @@
+{
+  "id": "cloudcore",
+  "name": "CloudCore",
+  "version": "${version}",
+  "authors": [
+    "booky10"
+  ],
+  "dependencies": [],
+  "main": "dev.booky.cloudcore.CloudCoreVelocityMain"
+}

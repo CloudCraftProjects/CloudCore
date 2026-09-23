@@ -3,20 +3,12 @@ package dev.booky.cloudcore;
 
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
-import com.velocitypowered.api.plugin.Plugin;
-import dev.booky.cloudcore.util.BuildConstants;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.bstats.velocity.Metrics;
 import org.jspecify.annotations.NullMarked;
 
 @NullMarked
-@Plugin(
-        id = "cloudcore",
-        name = "CloudCore",
-        version = BuildConstants.PLUGIN_VERSION,
-        authors = "booky10"
-)
 @Singleton
 public class CloudCoreVelocityMain {
 
