@@ -12,6 +12,7 @@ dependencies {
 }
 
 bukkit {
+    name = "CloudCore"
     main = "$group.cloudcore.CloudCoreBukkitMain"
     apiVersion = "1.20"
     authors = listOf("booky10")
