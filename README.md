@@ -28,9 +28,11 @@ repositories {
 
 dependencies {
     // bukkit dependency
-    compileOnly("dev.booky:cloudcore:1.1.0-SNAPSHOT")
+    compileOnly("dev.booky:cloudcore-bukkit:1.1.1-SNAPSHOT")
     // velocity dependency
-    compileOnly("dev.booky:cloudcore-velocity:1.1.0-SNAPSHOT")
+    compileOnly("dev.booky:cloudcore-velocity:1.1.1-SNAPSHOT")
+    // common dependency
+    compileOnly("dev.booky:cloudcore-common:1.1.1-SNAPSHOT")
 }
 ```
 

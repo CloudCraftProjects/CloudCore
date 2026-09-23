@@ -1,30 +1,50 @@
 import com.github.jengelman.gradle.plugins.shadow.ShadowPlugin
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import me.modmuss50.mpp.MppPlugin
 import me.modmuss50.mpp.PublishModTask
+import me.modmuss50.mpp.ModPublishExtension
 
 plugins {
-    id("java-library")
-    id("maven-publish")
-
-    alias(libs.plugins.pluginyml.bukkit)
-    alias(libs.plugins.run.paper)
+    alias(libs.plugins.pluginyml.bukkit) apply false
+    alias(libs.plugins.run.paper) apply false
     alias(libs.plugins.run.velocity) apply false
-    alias(libs.plugins.shadow)
+    alias(libs.plugins.shadow) apply false
 
     alias(libs.plugins.publishing)
 }
 
+val repositoryName = "CloudCraftProjects/CloudCore"
+
 allprojects {
+    group = "dev.booky"
+}
+
+publishMods {
+    changelog = "See https://github.com/$repositoryName/releases/tag/v${project.version}"
+    type = if (project.version.toString().endsWith("-SNAPSHOT")) BETA else STABLE
+    dryRun = !hasProperty("noDryPublish")
+
+    github {
+        accessToken = providers.environmentVariable("GITHUB_API_TOKEN")
+            .orElse(providers.gradleProperty("ccGithubToken"))
+
+        displayName = "${rootProject.name} v${project.version}"
+
+        repository = repositoryName
+        commitish = "master"
+        tagName = "v${project.version}"
+    }
+}
+
+subprojects {
     apply<JavaLibraryPlugin>()
     apply<MavenPublishPlugin>()
-
-    group = "dev.booky"
 
     repositories {
         maven("https://repo.cloudcraftmc.de/public/")
     }
 
-    java {
+    configure<JavaPluginExtension> {
         withSourcesJar()
         toolchain {
             languageVersion = JavaLanguageVersion.of(21)
@@ -32,9 +52,9 @@ allprojects {
         }
     }
 
-    publishing {
+    configure<PublishingExtension> {
         publications.create<MavenPublication>("maven") {
-            artifactId = project.name.lowercase()
+            artifactId = "${rootProject.name}-${project.name}".lowercase()
             from(components["java"])
         }
         repositories.maven("https://repo.cloudcraftmc.de/releases") {
@@ -44,22 +64,16 @@ allprojects {
     }
 
     tasks.withType<Jar> {
-        archiveBaseName = project.name
-    }
-
-    if (project != rootProject) {
-        tasks.withType<Jar> {
-            destinationDirectory = rootProject.tasks.jar.map { it.destinationDirectory }.get()
-        }
+        destinationDirectory = rootProject.layout.buildDirectory.dir("libs")
+        archiveBaseName = "${rootProject.name}-${project.name}".lowercase()
     }
 
     if (project.projectDir.name != "common") {
         apply<ShadowPlugin>()
         apply<MppPlugin>()
 
-        publishMods {
-            val repositoryName = "CloudCraftProjects/CloudCore"
-            file = tasks.shadowJar.flatMap { it.archiveFile }.get()
+        configure<ModPublishExtension> {
+            file = tasks.named<ShadowJar>("shadowJar").flatMap { it.archiveFile }.get()
             changelog = "See https://github.com/$repositoryName/releases/tag/v${project.version}"
             type = if (project.version.toString().endsWith("-SNAPSHOT")) BETA else STABLE
             additionalFiles.from(tasks.named<Jar>("sourcesJar").flatMap { it.archiveFile }.get())
@@ -75,9 +89,7 @@ allprojects {
                 commitish = "master"
                 tagName = "v${project.version}"
 
-                if (project != rootProject) {
-                    parent(rootProject.tasks.named("publishGithub"))
-                }
+                parent(rootProject.tasks.named("publishGithub"))
             }
             modrinth {
                 accessToken = providers.environmentVariable("MODRINTH_API_TOKEN")
@@ -98,51 +110,12 @@ allprojects {
         }
 
         tasks.withType<PublishModTask> {
-            dependsOn(tasks.shadowJar)
+            dependsOn(tasks.named("shadowJar"))
             dependsOn(tasks.named("sourcesJar"))
         }
     }
 }
 
-dependencies {
-    api(projects.cloudCoreCommon)
-    compileOnly(libs.paper.api)
-
-    // metrics
-    implementation(libs.bstats.bukkit)
-}
-
-bukkit {
-    main = "$group.cloudcore.CloudCoreBukkitMain"
-    apiVersion = "1.20"
-    authors = listOf("booky10")
-    website = "https://github.com/CloudCraftProjects/CloudCore"
-}
-
-tasks {
-    runServer {
-        minecraftVersion(libs.versions.paper.map { it.split("-")[0] }.get())
-
-        downloadPlugins {
-            github(
-                "PaperMC", "Debuggery",
-                "v${libs.versions.debuggery.get()}",
-                "debuggery-bukkit-${libs.versions.debuggery.get()}.jar"
-            )
-        }
-    }
-
-    shadowJar {
-        relocate("org.bstats", "${project.group}.cloudcore.bstats")
-    }
-
-    assemble {
-        dependsOn(shadowJar)
-    }
-
-    withType<Jar> {
-        manifest.attributes(
-            "paperweight-mappings-namespace" to "mojang"
-        )
-    }
+tasks.register<Delete>("clean") {
+    delete(project.layout.buildDirectory)
 }

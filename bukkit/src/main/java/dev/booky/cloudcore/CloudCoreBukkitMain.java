@@ -12,7 +12,7 @@ public class CloudCoreBukkitMain extends JavaPlugin {
         try {
             Class.forName("io.papermc.paper.configuration.Configuration");
         } catch (ClassNotFoundException exception) {
-            throw new RuntimeException("Please use paper for this plugin to function! Download it at https://papermc.io/.");
+            throw new RuntimeException("Please use paper for this plugin to function! Download it at https://papermc.io/");
         }
     }
 

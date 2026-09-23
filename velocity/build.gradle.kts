@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    api(projects.cloudCoreCommon)
+    api(projects.common)
 
     compileOnly(libs.velocity.api)
 
