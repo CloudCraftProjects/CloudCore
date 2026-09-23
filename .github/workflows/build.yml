@@ -31,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: CloudCore-Artifacts
-          path: build/libs/CloudCore-*
+          path: build/libs/cloudcore-*
           if-no-files-found: error
 
       - name: Publish to package registry
