@@ -16,6 +16,7 @@ bukkit {
     apiVersion = "1.20"
     authors = listOf("booky10")
     website = "https://github.com/CloudCraftProjects/CloudCore"
+    foliaSupported = true
 }
 
 tasks {
